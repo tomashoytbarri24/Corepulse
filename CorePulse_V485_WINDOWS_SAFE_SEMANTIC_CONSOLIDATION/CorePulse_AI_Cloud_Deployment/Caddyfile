@@ -1,0 +1,14 @@
+# TLS automático requiere un dominio que resuelva al servidor y puertos 80/443.
+{$COREPULSE_CLOUD_DOMAIN} {
+    encode zstd gzip
+    request_body {
+        max_size 128KB
+    }
+    @api path /v1/*
+    handle @api {
+        reverse_proxy api:8765
+    }
+    handle {
+        respond "Ruta no encontrada" 404
+    }
+}

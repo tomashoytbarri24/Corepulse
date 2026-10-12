@@ -1,0 +1,4 @@
+# CorePulse runtime dependencies for Windows / Python 3.12+.
+# For automatic installation CorePulse first uses requirements-runtime-lock.txt
+# and falls back to requirements-runtime-flex.txt when an exact lock is not resolvable.
+-r requirements-runtime-flex.txt

@@ -1,0 +1,30 @@
+{
+  "purpose": "Candidatos a verificar en servidor propio; NO existe ganador ni ranking medido",
+  "as_of": "2026-10-09",
+  "candidates": [
+    {
+      "id": "Qwen/Qwen3-8B",
+      "parameters_billion": 8,
+      "license": "Apache-2.0 (verificar versión exacta)",
+      "reference": "https://huggingface.co/Qwen/Qwen3-8B",
+      "role": "punto de partida de consumo relativamente menor en cloud",
+      "quality_measured": false
+    },
+    {
+      "id": "Qwen/Qwen3-14B",
+      "parameters_billion": 14,
+      "license": "Apache-2.0 (verificar versión exacta)",
+      "reference": "https://huggingface.co/Qwen/Qwen3-14B",
+      "role": "alternativa de mayor capacidad, validar VRAM y latencia",
+      "quality_measured": false
+    },
+    {
+      "id": "mistralai/Mistral-Small-3.2-24B-Instruct-2506",
+      "parameters_billion": 24,
+      "license": "Apache-2.0 (verificar versión exacta)",
+      "reference": "https://huggingface.co/mistralai/Mistral-Small-3.2-24B-Instruct-2506",
+      "role": "alternativa multilingüe de mayor tamaño, infraestructura potencialmente más costosa",
+      "quality_measured": false
+    }
+  ]
+}
