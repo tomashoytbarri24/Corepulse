@@ -326,6 +326,7 @@ def main() -> int:
     change_history = ChangeHistory()
     system_health = SystemHealth(telemetry, battery_health, storage_health, windows_health, recovery_health)
     performance_health = PerformanceHealth()
+    app.aboutToQuit.connect(tweaks.close)
     app.aboutToQuit.connect(telemetry.close)
     app.aboutToQuit.connect(cleanup.close)
     app.aboutToQuit.connect(battery_health.close)

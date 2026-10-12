@@ -19,7 +19,7 @@ def _helper(name):
 
 def test_minimal_tree_and_single_launcher():
     files = [p for p in ROOT.rglob("*") if p.is_file() and "__pycache__" not in p.parts and ".pytest_cache" not in p.parts]
-    assert len(files) == 35
+    assert len(files) == 36
     assert (ROOT / "Reglas para crear Versiones nuevas.txt").is_file()
     assert (ROOT / "versiones" / "HISTORIAL.md").is_file()
     assert sorted(p.name for p in ROOT.glob("*.py")) == ["main.py"]
@@ -30,7 +30,7 @@ def test_minimal_tree_and_single_launcher():
 
 def test_all_qml_components_exist():
     files = {p.stem for p in UI.glob("*.qml")}
-    assert files == {"Main", "Overview", "HistoryChart", "MetricLine", "StatTile", "Glyph", "ComponentDetail", "TweaksPage", "CleanupPage", "ThinScroll", "HealthPage"}
+    assert files == {"Main", "Overview", "HistoryChart", "MetricLine", "StatTile", "Glyph", "ComponentDetail", "TweaksPage", "CleanupPage", "ThinScroll", "HealthPage", "ThemesPage"}
     text = "\n".join(p.read_text(encoding="utf-8") for p in UI.glob("*.qml"))
     assert not re.search(r"Math\.random|synthetic|fake[_ ]?fps", text, re.I)
 
@@ -185,8 +185,8 @@ def test_sidebar_icons_are_specific_and_not_reused_in_key_entries():
 def test_rebuild_008_direct_geometry_no_scaled_shape_and_sidebar_contract():
     qml = (UI / "Main.qml").read_text(encoding="utf-8")
     glyph = (UI / "Glyph.qml").read_text(encoding="utf-8")
-    assert 'title:"CorePulse — Rebuild 051"' in qml
-    assert 'Monitoreo real del equipo · Rebuild 051' in qml
+    assert 'title:"CorePulse — Rebuild 053"' in qml
+    assert 'Monitoreo real del equipo · Rebuild 053' in qml
     assert 'width:26;height:26;radius:9' in qml
     assert 'width:22;height:22;kind:entry.modelData.icon' in qml
     assert 'width:22;height:22;kind:extraEntry.modelData.icon' in qml
@@ -675,7 +675,7 @@ def test_rebuild_013_cpu_clock_label_has_no_unusual_prefix_but_keeps_estimate_ho
     assert 'clock_marker' not in source
     assert 'GHz{clock_suffix}' in source
     assert 'sourceHint:"Frecuencia: "' in overview  # la explicación sigue disponible
-    assert 'title:"CorePulse — Rebuild 051"' in main
+    assert 'title:"CorePulse — Rebuild 053"' in main
 
 
 def test_rebuild_013_readings_scrollbar_dark_thin_and_not_overlapping_values():
@@ -865,8 +865,21 @@ def _fake_tweaks(monkeypatch):
     import types
 
     class FakeSignal:
-        def emit(self):
-            return None
+        def connect(self, callback):
+            self.callback = callback
+        def emit(self, *args):
+            if hasattr(self, "callback"):
+                self.callback(*args)
+
+    class FakeTimer:
+        def __init__(self, *args):
+            self.timeout = FakeSignal()
+        def setInterval(self, value):
+            self.interval = value
+        def start(self):
+            self.active = True
+        def stop(self):
+            self.active = False
 
     class FakeQObject:
         def __init__(self, *args, **kwargs):
@@ -877,6 +890,7 @@ def _fake_tweaks(monkeypatch):
     qt_core.Signal = lambda: FakeSignal()
     qt_core.Slot = lambda *args, **kwargs: lambda fn: fn
     qt_core.Property = lambda *args, **kwargs: lambda fn: property(fn)
+    qt_core.QTimer = FakeTimer
     qt_root = types.ModuleType("PySide6")
     monkeypatch.setitem(sys.modules, "PySide6", qt_root)
     monkeypatch.setitem(sys.modules, "PySide6.QtCore", qt_core)
@@ -922,6 +936,13 @@ def _fake_tweaks(monkeypatch):
     return module, registry
 
 
+def _finish_tweak_refresh(manager):
+    """Solo pruebas: drena la consulta asíncrona antes de otra operación."""
+    if manager._future is not None:
+        manager._future.result(timeout=5)
+        manager._finish_if_ready()
+
+
 def test_016_tweaks_all_low_risk_hkcu_dword_and_no_presets(monkeypatch):
     module, _ = _fake_tweaks(monkeypatch)
     assert len(module._OPTIONS) == 78
@@ -941,12 +962,15 @@ def test_016_apply_preserves_original_and_reverts_exactly(monkeypatch, tmp_path)
     key = (spec["path"], spec["name"])
     registry.values[key] = (1, registry.REG_DWORD)
     ctrl = module.TweaksManager(backup=tmp_path / "prefs.json")
+    # Las lecturas solo se fuerzan en pruebas; el getter de QML no bloquea.
+    ctrl._cached_options = ctrl._collect_options()
     before = [x for x in ctrl.options if x["id"] == "extensions"][0]
     assert before["status"] == "Sin aplicar" and not before["canRestore"]
     assert "aplicado" in ctrl.applyTweak("extensions").lower()
     assert registry.values[key] == (0, registry.REG_DWORD)
     assert module._load_backup(ctrl._backup)["originales"]["extensions"] == {"present": True, "value": 1}
-    assert ctrl.options[0]["canRestore"] is True
+    assert ctrl._collect_options()[0]["canRestore"] is True
+    _finish_tweak_refresh(ctrl)
     assert "restaurado" in ctrl.restoreTweak("extensions").lower()
     assert registry.values[key] == (1, registry.REG_DWORD)
     assert not module._load_backup(ctrl._backup)["originales"]
@@ -958,8 +982,10 @@ def test_016_missing_key_restores_absence_and_does_not_overwrite_original(monkey
     key = (spec["path"], spec["name"])
     ctrl = module.TweaksManager(backup=tmp_path / "prefs.json")
     ctrl.applyTweak("compact")
+    _finish_tweak_refresh(ctrl)
     assert module._load_backup(ctrl._backup)["originales"]["compact"] == {"present": False, "value": None}
     assert "ya está activo" in ctrl.applyTweak("compact").lower()
+    _finish_tweak_refresh(ctrl)
     ctrl.restoreTweak("compact")
     assert key not in registry.values
 
@@ -977,6 +1003,7 @@ def test_016_never_writes_when_backup_fails_or_registry_incompatible(monkeypatch
         raise OSError("sin espacio")
     monkeypatch.setattr(module, "_save_backup", fail_save)
     assert "no se pudo" in ctrl.applyTweak("transparency").lower()
+    _finish_tweak_refresh(ctrl)
     assert registry.writes == []
     monkeypatch.setattr(module, "_is_windows_11", lambda: False)
     assert "no disponible" in ctrl.applyTweak("transparency").lower()
@@ -1002,6 +1029,7 @@ def test_016_tweaks_qml_live_states_confirmation_dark_scroll_and_main_routing():
     assert 'context.setContextProperty("tweaks", tweaks)' in py
     assert '"Explorador", "Barra de tareas", "Interfaz", "Privacidad"' in qml
     assert 'tweaks.options.filter(' in qml
+    assert 'ListView {' in qml
     assert 'page.pendingAction="apply"' in qml and 'page.pendingAction="restore"' in qml
     assert 'tweaks.applyTweak(page.pendingId)' in qml and 'tweaks.restoreTweak(page.pendingId)' in qml
     assert 'ThinScroll {' in qml and 'target: scroller' in qml
@@ -1040,8 +1068,10 @@ def test_018_blocked_adjustment_never_writes(monkeypatch, tmp_path):
     # No afirmamos que todos estén bloqueados: el nuevo motor permite los
     # reversibles en Windows 11, pero fuera de Windows falla cerrado.
     for tweak_id in ("disable_defender_stack", "disable_auto_updates", "remove_edge", "disable_hibernation"):
+        _finish_tweak_refresh(controller)
         response = controller.applyTweak(tweak_id)
         assert "No se aplicó" in response or "Bloqueado" in response
+        _finish_tweak_refresh(controller)
         assert controller.restoreTweak(tweak_id)
     assert registry.writes == []
     assert not (tmp_path / "backup.json").exists()
@@ -1493,7 +1523,7 @@ def test_rebuild_032_scrollbars_are_custom_but_scrollable_and_reusable():
 
 
 def test_rebuild_032_unmodified_windows_engines_and_coverage():
-    assert 'CorePulse — Rebuild 051' in (UI/'Main.qml').read_text(encoding='utf-8')
+    assert 'CorePulse — Rebuild 053' in (UI/'Main.qml').read_text(encoding='utf-8')
     assert (ROOT/'Reglas para crear Versiones nuevas.txt').is_file()
     assert 'REBUILD 032' in (ROOT/'versiones/HISTORIAL.md').read_text(encoding='utf-8')
 
@@ -1515,7 +1545,7 @@ def test_rebuild_033_ram_monitor_uses_corepulse_palette_not_sky_blue():
 def test_rebuild_033_no_changes_to_ram_data_or_interaction():
     view = (UI / "CleanupPage.qml").read_text(encoding="utf-8")
     main = (UI / "Main.qml").read_text(encoding="utf-8")
-    assert 'title:"CorePulse — Rebuild 051"' in main
+    assert 'title:"CorePulse — Rebuild 053"' in main
     assert 'REBUILD 033' in (ROOT / "versiones" / "HISTORIAL.md").read_text(encoding="utf-8")
     for part in (
         'ramProgress.animatedPercent',
@@ -1539,7 +1569,7 @@ def test_rebuild_034_scroll_overlay_never_anchors_across_flickable_content_item(
         ("Main.qml", "readingsScroll"),
     ):
         source = (UI / file).read_text(encoding="utf-8")
-        id_match = re.search(r"\bFlickable\s*\{\s*id\s*:\s*" + flick_id + r"\b", source)
+        id_match = re.search(r"\b(?:Flickable|ListView)\s*\{\s*id\s*:\s*" + flick_id + r"\b", source)
         assert id_match, f"Flickable missing: {file}"
         # Walk QML curly braces from Flickable's opening brace, accounting for
         # string literals, to find its matching closing brace.
@@ -2156,7 +2186,7 @@ def test_windows_cards_details_raised_and_repair_ui_present():
     assert 'visible: page.currentModule === "repair"' in page
     assert 'id: repairConfirmOverlay' in page
     assert 'window.selectedPage==="repair"' in main
-    assert 'Rebuild 051' in main
+    assert 'Rebuild 053' in main
 
 
 def test_rebuild_042_recovery_module_present():
@@ -2302,7 +2332,7 @@ def test_history_044_qml_routes_without_duplicate_modules():
     main = (UI/'Main.qml').read_text(encoding='utf-8')
     health = (UI/'HealthPage.qml').read_text(encoding='utf-8')
     app = (ROOT/'main.py').read_text(encoding='utf-8')
-    assert 'title:"CorePulse — Rebuild 051"' in main
+    assert 'title:"CorePulse — Rebuild 053"' in main
     assert 'window.selectedPage === "change_history" ? "history"' in main
     assert main.count('id:"change_history",label:"Historial de cambios"') == 1
     assert 'visible: page.currentModule === "history"' in health
@@ -2831,3 +2861,95 @@ def test_050_online_steam_cover_needs_explicit_user_action():
     assert 'Cargar carátula de Steam' in qml
     assert "_steam_remote_art(appid)" in code
     assert "if not art and origin == 'Steam' and appid in allowed_online_art:" in code
+
+
+def test_themes_module_exists_and_shell_palette_is_switchable():
+    main_qml = (UI / "Main.qml").read_text(encoding="utf-8")
+    themes_qml = (UI / "ThemesPage.qml").read_text(encoding="utf-8")
+    assert 'id:"themes",label:"Temas",icon:"palette"' in main_qml
+    assert 'window.selectedPage==="themes"?themesComponent' in main_qml
+    assert 'property string selectedThemeId:"corepulse"' in main_qml
+    for theme_id in ("corepulse", "aurora", "violet", "ember"):
+        assert f'id:"{theme_id}"' in main_qml
+    assert 'signal applyTheme(string themeId)' in themes_qml
+    assert 'text: "Temas"' in themes_qml
+    assert 'text: themeCard.active ? "Aplicado" : "Aplicar"' in themes_qml
+
+
+def test_health_hub_icons_use_distinct_colors():
+    qml = (UI / "HealthPage.qml").read_text(encoding="utf-8")
+    for fragment in (
+        'iconColor:"#4EDDC8"',
+        'iconColor:"#58C8FF"',
+        'iconColor:"#7EE08A"',
+        'iconColor:"#F2B661"',
+        'iconColor:"#5EE1D5"',
+        'iconColor:"#B879FF"',
+        'iconColor:"#FF82CF"',
+    ):
+        assert fragment in qml
+    assert 'function moduleAccent(moduleKey)' in qml
+    assert 'hubCard.modelData.iconColor' in qml
+
+
+# REBUILD 053 — UI inmediata sin sondeo síncrono de 78 tweaks.
+def test_053_tweaks_getter_does_not_query_registry_or_legacy(monkeypatch, tmp_path):
+    module, _ = _fake_tweaks(monkeypatch)
+    def forbidden(*args, **kwargs):
+        raise AssertionError("No debe consultarse Windows durante construcción de la vista")
+    monkeypatch.setattr(module, "_safe_read", forbidden)
+    monkeypatch.setattr(module.legacy_engine, "detect_tweak", forbidden)
+    manager = module.TweaksManager(backup=tmp_path / "backup.json")
+    assert len(manager.options) == 78
+    assert not any(item["available"] or item["canRestore"] for item in manager.options)
+    assert all(item["status"] == "Comprobando…" for item in manager.options)
+    assert manager.busy is False
+    manager.close()
+
+
+def test_053_refresh_runs_in_worker_and_commits_only_after_result(monkeypatch, tmp_path):
+    import threading
+    import time
+    module, _ = _fake_tweaks(monkeypatch)
+    manager = module.TweaksManager(backup=tmp_path / "backup.json")
+    started, release = threading.Event(), threading.Event()
+    result = [dict(item) for item in manager.options]
+    result[0].update(status="Ajuste activo", available=True, active=True)
+    def slow_probe():
+        started.set()
+        assert release.wait(timeout=5)
+        return result
+    monkeypatch.setattr(manager, "_collect_options", slow_probe)
+    t0 = time.monotonic()
+    manager.refresh()
+    assert time.monotonic() - t0 < 0.5
+    assert started.wait(timeout=1)
+    assert manager.busy and manager.options[0]["status"] == "Comprobando…"
+    release.set()
+    assert manager._future.result(timeout=5) is result
+    manager._finish_if_ready()
+    assert not manager.busy
+    assert manager.options[0]["active"] is True
+    manager.close()
+
+
+def test_053_virtualized_cards_are_offscreen_safe():
+    qml = (UI / "TweaksPage.qml").read_text(encoding="utf-8")
+    manager = (ROOT / "core" / "tweaks" / "tweaks.py").read_text(encoding="utf-8")
+    assert "ListView {" in qml and "model: page.displayRows" in qml
+    assert "cacheBuffer: 280" in qml
+    assert 'enabled:!tweaks.busy && optionCard.opt.available' in qml
+    assert "ThreadPoolExecutor(max_workers=1" in manager
+    assert "self._executor.submit(self._collect_options)" in manager
+    assert "self._cached_options" in manager
+    assert "app.aboutToQuit.connect(tweaks.close)" in (ROOT / "main.py").read_text(encoding="utf-8")
+
+
+def test_053_reopen_skips_recently_verified_refresh(monkeypatch, tmp_path):
+    import time
+    module, _ = _fake_tweaks(monkeypatch)
+    manager = module.TweaksManager(backup=tmp_path / "prefs.json")
+    manager._last_scan = time.monotonic()
+    monkeypatch.setattr(manager, "refresh", lambda: (_ for _ in ()).throw(AssertionError("No recalcular")))
+    manager.ensureFresh()
+    manager.close()

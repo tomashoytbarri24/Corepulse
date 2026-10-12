@@ -6,7 +6,7 @@ import QtQuick.Layouts
 ApplicationWindow {
     id: window
     visible:true
-    title:"CorePulse — Rebuild 051"
+    title:"CorePulse — Rebuild 053"
     width:initialWindowWidth
     height:initialWindowHeight
     minimumWidth:Math.min(900,initialWindowWidth)
@@ -14,7 +14,7 @@ ApplicationWindow {
     x:initialWindowX
     y:initialWindowY
     flags:Qt.Window | Qt.FramelessWindowHint
-    color:"#111118"
+    color:window.activeTheme.bgStart
 
     property bool sidebarCollapsed:false
     property bool moreOpen:false
@@ -22,8 +22,20 @@ ApplicationWindow {
     property string componentBackTarget:"summary"
     property bool restartConfirmOpen:false
     property bool restartResultOpen:false
-    readonly property color cyan:"#17B9F7"
-    readonly property color purple:"#B756EA"
+    property string selectedThemeId:"corepulse"
+    readonly property var themeCatalog:[
+        {id:"corepulse", title:"CorePulse", accent:"#4EDDC8", cyan:"#17B9F7", purple:"#B756EA", bgStart:"#111319", bgMid:"#14131E", bgEnd:"#201529", sidebar:"#14131D", sidebarBorder:"#2C2A37", sidebarActive:"#1B3D58", sidebarActiveIcon:"#173449", sidebarActiveBorder:"#21516C", panel:"#1A1C26", panelBorder:"#303647", description:"Base oficial oscura de CorePulse."},
+        {id:"aurora", title:"Aurora", accent:"#59E3C0", cyan:"#42C8FF", purple:"#7C73FF", bgStart:"#0F1720", bgMid:"#111D27", bgEnd:"#142633", sidebar:"#101923", sidebarBorder:"#223444", sidebarActive:"#173F52", sidebarActiveIcon:"#143747", sidebarActiveBorder:"#2A6078", panel:"#18232D", panelBorder:"#314453", description:"Azul petróleo con acentos turquesa."},
+        {id:"violet", title:"Violet Neon", accent:"#7EE0FF", cyan:"#5EB8FF", purple:"#C06BFF", bgStart:"#12111A", bgMid:"#18142A", bgEnd:"#241536", sidebar:"#171222", sidebarBorder:"#352847", sidebarActive:"#392B52", sidebarActiveIcon:"#2E2344", sidebarActiveBorder:"#6A4C94", panel:"#1D1A28", panelBorder:"#433651", description:"Violeta técnico con brillo frío."},
+        {id:"ember", title:"Ember Tech", accent:"#F6C166", cyan:"#FF9D5C", purple:"#D8699B", bgStart:"#151216", bgMid:"#1C161D", bgEnd:"#27161F", sidebar:"#18131A", sidebarBorder:"#3A2933", sidebarActive:"#4A2E33", sidebarActiveIcon:"#3B2428", sidebarActiveBorder:"#7A4B54", panel:"#211A22", panelBorder:"#493642", description:"Ámbar cálido y magenta suave."}
+    ]
+    function themeById(id) {
+        for (let i = 0; i < themeCatalog.length; ++i) if (themeCatalog[i].id === id) return themeCatalog[i]
+        return themeCatalog[0]
+    }
+    readonly property var activeTheme: themeById(selectedThemeId)
+    readonly property color cyan:activeTheme.cyan
+    readonly property color purple:activeTheme.purple
     readonly property color muted:"#9DA9BA"
     readonly property color ink:"#F0F3FB"
     readonly property var primaryGroups:[
@@ -112,11 +124,11 @@ ApplicationWindow {
         anchors.fill:parent
         radius:window.visibility===Window.Windowed ? 16 : 0
         border.width:1
-        border.color:"#2A2D3A"
+        border.color:window.activeTheme.panelBorder
         gradient:Gradient {
-            GradientStop { position:0; color:"#111319" }
-            GradientStop { position:0.76; color:"#14131E" }
-            GradientStop { position:1; color:"#201529" }
+            GradientStop { position:0; color:window.activeTheme.bgStart }
+            GradientStop { position:0.76; color:window.activeTheme.bgMid }
+            GradientStop { position:1; color:window.activeTheme.bgEnd }
         }
         clip:true
 
@@ -124,9 +136,9 @@ ApplicationWindow {
             id: sidebar
             width:window.sidebarCollapsed ? 74 : 270
             height:parent.height
-            color:"#14131D"
+            color:window.activeTheme.sidebar
             Behavior on width { NumberAnimation { duration:160; easing.type:Easing.OutCubic } }
-            Rectangle{anchors.right:parent.right;width:1;height:parent.height;color:"#2C2A37"}
+            Rectangle{anchors.right:parent.right;width:1;height:parent.height;color:window.activeTheme.sidebarBorder}
 
             // Barra lateral sin bloque de marca: la navegación comienza más arriba.
             // La franja libre de la izquierda sigue permitiendo mover la ventana.
@@ -191,7 +203,7 @@ ApplicationWindow {
                                     required property var modelData
                                     readonly property bool active:modelData.id==="health" ? (["health","battery","windows_health","repair","restore","change_history","audio"].indexOf(window.selectedPage) >= 0) : window.selectedPage===modelData.id
                                     width:groupColumn.width-16;height:41;x:8;radius:11
-                                    color:active?"#1B3D58":entryMouse.containsMouse?"#20232F":"transparent"
+                                    color:active?window.activeTheme.sidebarActive:entryMouse.containsMouse?"#20232F":"transparent"
                                     Rectangle {
                                         visible:entry.active
                                         anchors.left:parent.left;anchors.verticalCenter:parent.verticalCenter
@@ -201,9 +213,9 @@ ApplicationWindow {
                                         x:window.sidebarCollapsed?(parent.width-width)/2:12
                                         anchors.verticalCenter:parent.verticalCenter
                                         width:26;height:26;radius:9
-                                        color:entry.active?"#173449":entryMouse.containsMouse?"#171C27":"transparent"
+                                        color:entry.active?window.activeTheme.sidebarActiveIcon:entryMouse.containsMouse?"#171C27":"transparent"
                                         border.width:entry.active?1:0
-                                        border.color:entry.active?"#21516C":"transparent"
+                                        border.color:entry.active?window.activeTheme.sidebarActiveBorder:"transparent"
                                         Glyph {
                                             anchors.centerIn:parent
                                             width:22;height:22;kind:entry.modelData.icon
@@ -265,14 +277,14 @@ ApplicationWindow {
                             required property var modelData
                             readonly property bool active:window.selectedPage===modelData.id
                             width:navColumn.width-16;x:8;height:39;radius:10
-                            color:active?"#1B3D58":extraMouse.containsMouse?"#222531":"transparent"
+                            color:active?window.activeTheme.sidebarActive:extraMouse.containsMouse?"#222531":"transparent"
                             Rectangle {
                                 x:window.sidebarCollapsed?(parent.width-width)/2:12
                                 anchors.verticalCenter:parent.verticalCenter
                                 width:26;height:26;radius:9
-                                color:extraEntry.active?"#173449":extraMouse.containsMouse?"#171C27":"transparent"
+                                color:extraEntry.active?window.activeTheme.sidebarActiveIcon:extraMouse.containsMouse?"#171C27":"transparent"
                                 border.width:extraEntry.active?1:0
-                                border.color:extraEntry.active?"#21516C":"transparent"
+                                border.color:extraEntry.active?window.activeTheme.sidebarActiveBorder:"transparent"
                                 Glyph {
                                     anchors.centerIn:parent
                                     width:22;height:22;kind:extraEntry.modelData.icon
@@ -330,7 +342,7 @@ ApplicationWindow {
                             elide:Text.ElideRight;Layout.fillWidth:true
                         }
                         Text {
-                            text:"Monitoreo real del equipo · Rebuild 051"
+                            text:"Monitoreo real del equipo · Rebuild 053"
                             color:window.muted;font.pixelSize:11
                         }
                     }
@@ -374,6 +386,7 @@ ApplicationWindow {
                 anchors.bottom:parent.bottom;anchors.bottomMargin:29
                 sourceComponent:window.selectedPage==="summary"?overviewComponent:
                                 window.selectedPage==="readings"?readingsComponent:
+                                window.selectedPage==="themes"?themesComponent:
                                 window.selectedPage==="tweaks"?tweaksComponent:
                                 window.selectedPage==="cleanup"?cleanupComponent:
                                 (window.selectedPage==="health" || window.selectedPage==="battery" || window.selectedPage==="windows_health" || window.selectedPage==="repair" || window.selectedPage==="storage" || window.selectedPage==="restore" || window.selectedPage==="change_history" || window.selectedPage==="audio" || window.selectedPage==="health_performance")?healthComponent:
@@ -412,6 +425,16 @@ ApplicationWindow {
                         window.selectedPage === "battery" ? "battery" : "auto"
                     onGoBack: window.selectedPage="summary"
                     onNavigateTo: function(target) { if (["cpu","gpu","ram"].indexOf(target) >= 0) window.componentBackTarget = "health"; window.selectedPage = target }
+                }
+            }
+            Component {
+                id:themesComponent
+                ThemesPage {
+                    themeCatalog: window.themeCatalog
+                    selectedThemeId: window.selectedThemeId
+                    currentAccent: window.activeTheme.accent
+                    onApplyTheme: function(themeId) { window.selectedThemeId = themeId }
+                    onGoBack: window.selectedPage = "summary"
                 }
             }
             Component {

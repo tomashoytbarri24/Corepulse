@@ -543,3 +543,21 @@
 - En Rendimiento, la tarjeta de juego activo ahora muestra Estado, Tiempo activo y Origen debajo de la carátula.
 - Se mantiene la detección real de juego, carátulas de Steam y tiempo de sesión.
 
+
+## REBUILD 052 — Temas iniciales + iconos de Centro de Salud
+- Base: REBUILD 051.
+- Centro de Salud: cada icono del hub ahora usa un color distinto para diferenciar módulos.
+- Se añadió el módulo Temas como primera versión funcional.
+- Los temas aplican paleta base del shell principal (fondo, sidebar y acentos de navegación).
+- Nuevo archivo: ui/ThemesPage.qml.
+- Validación: pytest -q -> 161 PASS.
+
+
+## REBUILD 053 — Tweaks de apertura rápida
+- Base: REBUILD 052; catálogo conservado de 78 tweaks y 12 categorías.
+- Verificación de estados en trabajador de segundo plano; el getter `options` deja de ejecutar Registro y PowerShell en el hilo QML.
+- Todas las operaciones permanecen deshabilitadas hasta que el estado real quede verificado. Respaldo y rollback conservados.
+- Renderizado virtualizado con `ListView` y tarjetas generadas al desplazarse.
+- Resultados reutilizables durante 60 segundos; comprobación manual disponible con «Actualizar».
+- Sin archivos Python de producción nuevos ni cambios en otros motores.
+- Validación: 165 pruebas PASS. Pendiente de probar rendimiento y renderizado en Windows.

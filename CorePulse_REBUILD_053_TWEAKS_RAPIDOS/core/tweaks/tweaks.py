@@ -8,9 +8,11 @@ from __future__ import annotations
 import json
 import os
 import sys
+import time
 from pathlib import Path
+from concurrent.futures import ThreadPoolExecutor
 
-from PySide6.QtCore import QObject, Property, Signal, Slot
+from PySide6.QtCore import QObject, Property, Signal, Slot, QTimer
 # Carga relativa explícita: también funciona en pruebas importlib y ejecución portable.
 import importlib.util
 _engine_spec = importlib.util.spec_from_file_location("corepulse_rebuild_tweaks_engine", Path(__file__).with_name("tweaks_engine.py"))
@@ -1137,16 +1139,53 @@ def _save_backup(path, data):
 
 class TweaksManager(QObject):
     stateChanged = Signal()
+    busyChanged = Signal()
 
     def __init__(self, parent=None, *, backup=None):
         super().__init__(parent)
         self._backup = Path(backup) if backup is not None else _backup_path()
-        self._cached_options = None
+        # Nunca leer Registro/PowerShell desde un getter usado por QML.
+        # El catálogo se puede mostrar inmediatamente, pero ninguna acción
+        # se habilita hasta verificar las fuentes reales.
+        self._cached_options = [self._placeholder(spec) for spec in _OPTIONS]
+        self._busy = False
+        self._closed = False
+        self._queued_refresh = False
+        self._last_scan = None
+        self._future = None
+        self._executor = ThreadPoolExecutor(max_workers=1, thread_name_prefix="corepulse-tweaks-check")
+        self._poll = QTimer(self)
+        self._poll.setInterval(100)
+        self._poll.timeout.connect(self._finish_if_ready)
+
+    @staticmethod
+    def _placeholder(spec):
+        return {
+            "id": spec["id"], "title": spec["title"],
+            "category": spec["category"], "description": spec["description"],
+            "requiresExplorer": spec["requiresExplorer"],
+            "available": False, "active": False, "canRestore": False,
+            "status": "Comprobando…", "detail": "Verificando el estado real de Windows.",
+            "backupError": False, "enabledByPolicy": spec["enabledByPolicy"],
+            "risk": spec["risk"], "requiresAdmin": spec["requiresAdmin"],
+            "sourceId": spec["sourceId"],
+        }
 
     @Property("QVariantList", notify=stateChanged)
     def options(self):
-        if self._cached_options is not None:
-            return self._cached_options
+        # Solo devuelve memoria; nunca inicia 78 consultas desde bindings QML.
+        return self._cached_options
+
+    @Property(bool, notify=busyChanged)
+    def busy(self):
+        return self._busy
+
+    @Property(bool, constant=True)
+    def isWindows11(self):
+        return _is_windows_11()
+
+    def _collect_options(self):
+        """Función de trabajo sin acceso a objetos Qt ni propiedades de QML."""
         supported = _is_windows_11()
         try:
             backups = _load_backup(self._backup)["originales"]
@@ -1154,20 +1193,22 @@ class TweaksManager(QObject):
         except (OSError, ValueError, json.JSONDecodeError) as exc:
             backups = {}
             backup_error = f"Respaldo no disponible: {exc}"
+        # Un solo acceso al registro persistido para todo el catálogo V485.
+        # Ahorra decenas de lecturas a disco al abrir la pestaña.
+        try:
+            rollback_ids = legacy_engine.saved_rollback_ids() if supported else set()
+        except (OSError, ValueError, json.JSONDecodeError):
+            rollback_ids = set()
         output = []
         for spec in _OPTIONS:
-            row = {k: spec[k] for k in ("id", "title", "category", "description", "requiresExplorer")}
-            row.update(active=False, available=supported, canRestore=spec["id"] in backups,
-                       status="Sin aplicar", detail="", backupError=bool(backup_error))
-            row["enabledByPolicy"] = spec["enabledByPolicy"]
-            row["risk"] = spec["risk"]
-            row["requiresAdmin"] = spec["requiresAdmin"]
-            row["sourceId"] = spec["sourceId"]
+            row = self._placeholder(spec)
+            row.update(available=supported, canRestore=spec["id"] in backups,
+                       status="Sin aplicar", detail="")
             if not spec["enabledByPolicy"]:
-                source_id = spec["sourceId"]
-                probe = legacy_engine.preflight_tweak(source_id)
                 try:
-                    detected = legacy_engine.detect_tweak(source_id)
+                    source_id = spec["sourceId"]
+                    probe = legacy_engine.preflight_tweak(source_id)
+                    detected = legacy_engine.detect_tweak(source_id, _rollback_ids=rollback_ids)
                     row.update(
                         available=bool(probe.get("applicable")) and detected.get("status") != "unknown",
                         active=bool(detected.get("verified")) and bool(detected.get("applied")),
@@ -1179,8 +1220,6 @@ class TweaksManager(QObject):
                     )
                 except Exception as exc:
                     row.update(available=False, status="No verificable", detail=str(exc))
-            if not spec["enabledByPolicy"]:
-                pass  # Estado comprobado por motor heredado con snapshot individual.
             elif not supported:
                 row.update(status="No disponible", detail="Solo compatible con Windows 11.")
             else:
@@ -1197,20 +1236,62 @@ class TweaksManager(QObject):
             if backup_error:
                 row.update(available=False, canRestore=False, detail=backup_error)
             output.append(row)
-        self._cached_options = output
         return output
 
-    @Property(bool, constant=True)
-    def isWindows11(self):
-        return _is_windows_11()
+    @Slot()
+    def ensureFresh(self):
+        # Reabrir la pestaña durante el siguiente minuto no repite los
+        # sondeos de PowerShell. "Actualizar" sigue siendo manual e inmediato.
+        if self._last_scan is None or time.monotonic() - self._last_scan > 60:
+            if self._future is None:
+                self.refresh()
 
     @Slot()
     def refresh(self):
-        self._cached_options = None
+        if self._closed:
+            return
+        if self._future is not None:
+            self._queued_refresh = True
+            return
+        self._busy = True
+        self.busyChanged.emit()
+        self._future = self._executor.submit(self._collect_options)
+        self._poll.start()
+
+    @Slot()
+    def _finish_if_ready(self):
+        if self._closed or self._future is None or not self._future.done():
+            return
+        self._poll.stop()
+        succeeded = True
+        try:
+            result = self._future.result()
+        except Exception:
+            succeeded = False
+            # No anunciamos controles seguros si falló el sondeo global.
+            result = [self._placeholder(spec) for spec in _OPTIONS]
+            for row in result:
+                row.update(status="No verificable", detail="No se pudo completar la consulta de Windows.")
+        self._future = None
+        self._cached_options = result
+        self._last_scan = time.monotonic() if succeeded else None
+        self._busy = False
         self.stateChanged.emit()
+        self.busyChanged.emit()
+        if self._queued_refresh:
+            self._queued_refresh = False
+            self.refresh()
+
+    @Slot()
+    def close(self):
+        self._closed = True
+        self._poll.stop()
+        self._executor.shutdown(wait=False, cancel_futures=True)
 
     @Slot(str, result=str)
     def applyTweak(self, tweak_id):
+        if self._busy:
+            return "Espera a que termine la comprobación de los ajustes."
         spec = _BY_ID.get(tweak_id)
         if spec is None or not _is_windows_11():
             return "No disponible: ajuste desconocido o Windows 11 no detectado."
@@ -1244,6 +1325,8 @@ class TweaksManager(QObject):
 
     @Slot(str, result=str)
     def restoreTweak(self, tweak_id):
+        if self._busy:
+            return "Espera a que termine la comprobación de los ajustes."
         spec = _BY_ID.get(tweak_id)
         if spec is None or not _is_windows_11():
             return "No disponible: ajuste desconocido o Windows 11 no detectado."

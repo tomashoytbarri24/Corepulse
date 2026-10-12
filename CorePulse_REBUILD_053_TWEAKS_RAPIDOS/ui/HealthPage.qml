@@ -138,6 +138,20 @@ Item {
         }
     }
 
+    function moduleAccent(moduleKey) {
+        switch (moduleKey) {
+        case "battery": return "#4EDDC8"
+        case "windows": return "#58C8FF"
+        case "repair": return "#7EE08A"
+        case "history": return "#F2B661"
+        case "recovery": return "#5EE1D5"
+        case "performance": return "#B879FF"
+        case "audio": return "#FF82CF"
+        case "hub": return page.accent
+        default: return page.accent
+        }
+    }
+
     function playAudioTest(channel) {
         if (channel === "left") {
             bothChannel.stop(); rightChannel.stop(); leftChannel.stop(); leftChannel.play()
@@ -196,7 +210,7 @@ Item {
                 Rectangle {
                     Layout.preferredWidth: 45; Layout.preferredHeight: 45
                     radius: 13; color: "#193A35"
-                    Glyph { anchors.centerIn: parent; width: 26; height: 26; kind: page.currentModule === "performance" ? "gauge" : page.currentModule === "hub" ? "health_shield" : page.currentModule === "storage" ? "storage" : page.currentModule === "windows" ? "services" : page.currentModule === "repair" ? "wrench" : page.currentModule === "recovery" ? "restore" : page.currentModule === "history" ? "history" : page.currentModule === "audio" ? "headphones" : "battery"; ink: page.accent }
+                    Glyph { anchors.centerIn: parent; width: 26; height: 26; kind: page.currentModule === "performance" ? "gauge" : page.currentModule === "hub" ? "health_shield" : page.currentModule === "storage" ? "storage" : page.currentModule === "windows" ? "services" : page.currentModule === "repair" ? "wrench" : page.currentModule === "recovery" ? "restore" : page.currentModule === "history" ? "history" : page.currentModule === "audio" ? "headphones" : "battery"; ink: page.moduleAccent(page.currentModule) }
                 }
                 ColumnLayout {
                     Layout.fillWidth: true; Layout.minimumWidth: 0; spacing: 4
@@ -279,13 +293,13 @@ Item {
                     columnSpacing: 12; rowSpacing: 12
                     Repeater {
                         model: [
-                            {key:"battery", title:"Batería", desc:"Capacidad, desgaste, ciclos y autonomía.", icon:"battery", target:"battery"},
-                            {key:"windows", title:"Windows", desc:"Inicio, servicios, estabilidad y controladores.", icon:"services", target:"windows"},
-                            {key:"repair", title:"Reparación", desc:"Diagnóstico y reparación con DISM/SFC.", icon:"wrench", target:"repair"},
-                            {key:"history", title:"Historial y cambios", desc:"Registros disponibles de mantenimiento y cambios.", icon:"history", target:"history"},
-                            {key:"recovery", title:"Recuperación", desc:"Puntos de restauración y herramientas de Windows.", icon:"restore", target:"recovery"},
-                            {key:"performance", title:"Rendimiento", desc:"Throttling, energía y herramientas Gaming.", icon:"gauge", target:"performance"},
-                            {key:"audio", title:"Test de Audio", desc:"Canales izquierdo/derecho y herramientas de sonido.", icon:"headphones", target:"audio"}
+                            {key:"battery", title:"Batería", desc:"Capacidad, desgaste, ciclos y autonomía.", icon:"battery", target:"battery", iconColor:"#4EDDC8"},
+                            {key:"windows", title:"Windows", desc:"Inicio, servicios, estabilidad y controladores.", icon:"services", target:"windows", iconColor:"#58C8FF"},
+                            {key:"repair", title:"Reparación", desc:"Diagnóstico y reparación con DISM/SFC.", icon:"wrench", target:"repair", iconColor:"#7EE08A"},
+                            {key:"history", title:"Historial y cambios", desc:"Registros disponibles de mantenimiento y cambios.", icon:"history", target:"history", iconColor:"#F2B661"},
+                            {key:"recovery", title:"Recuperación", desc:"Puntos de restauración y herramientas de Windows.", icon:"restore", target:"recovery", iconColor:"#5EE1D5"},
+                            {key:"performance", title:"Rendimiento", desc:"Throttling, energía y herramientas Gaming.", icon:"gauge", target:"performance", iconColor:"#B879FF"},
+                            {key:"audio", title:"Test de Audio", desc:"Canales izquierdo/derecho y herramientas de sonido.", icon:"headphones", target:"audio", iconColor:"#FF82CF"}
                         ].filter(function(item) { return item.key !== "battery" || page.info.hasBattery })
                         delegate: Rectangle {
                             id: hubCard
@@ -297,7 +311,7 @@ Item {
                                 anchors.fill: parent; anchors.margins: 14; spacing: 7
                                 RowLayout {
                                     Layout.fillWidth: true; spacing: 8
-                                    Glyph { kind: hubCard.modelData.icon; ink: hubCard.available ? page.accent : page.muted; Layout.preferredWidth: 21; Layout.preferredHeight: 21 }
+                                    Glyph { kind: hubCard.modelData.icon; ink: hubCard.available ? hubCard.modelData.iconColor : page.muted; Layout.preferredWidth: 21; Layout.preferredHeight: 21 }
                                     Text { text: hubCard.modelData.title; color: page.ink; font.bold: true; font.pixelSize: 14; Layout.fillWidth: true; elide: Text.ElideRight }
                                 }
                                 Text { text: hubCard.modelData.desc; color: page.muted; font.pixelSize: 11; Layout.fillWidth: true; wrapMode: Text.WordWrap; maximumLineCount: 2 }
