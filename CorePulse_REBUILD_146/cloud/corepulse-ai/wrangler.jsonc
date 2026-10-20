@@ -1,0 +1,43 @@
+{
+  "name": "corepulse-ai-cloud",
+  "main": "src/index.mjs",
+  "compatibility_date": "2026-10-01",
+  "workers_dev": false,
+  "secrets": {
+    "required": [
+      "GROQ_API_KEY"
+    ]
+  },
+  "ratelimits": [
+    {
+      "name": "RATE_LIMITER",
+      "namespace_id": "112",
+      "simple": {
+        "limit": 8,
+        "period": 60
+      }
+    }
+  ],
+  "routes": [
+    {
+      "pattern": "ai.corepulse.cl",
+      "custom_domain": true
+    }
+  ],
+  "durable_objects": {
+    "bindings": [
+      {
+        "name": "MODEL_BUDGET",
+        "class_name": "ModelBudgetLedger"
+      }
+    ]
+  },
+  "migrations": [
+    {
+      "tag": "v1-model-budget",
+      "new_sqlite_classes": [
+        "ModelBudgetLedger"
+      ]
+    }
+  ]
+}
