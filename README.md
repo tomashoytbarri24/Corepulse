@@ -103,7 +103,7 @@ Iniciar_CorePulse.bat
     </td>
     <td align="center" width="200">
       <a href="https://github.com/agtttttttttttt"><img src="https://github.com/agtttttttttttt.png" width="90" style="border-radius:50%"><br><b>Agustín Valdés</b></a><br>
-      ✅ Validación · 📝 Documentación
+      🌐 Desarrollo web · ✅ Validación · 📝 Documentación
     </td>
     <td align="center" width="200">
       <a href="https://github.com/maxicpa"><img src="https://github.com/maxicpa.png" width="90" style="border-radius:50%"><br><b>Maximiliano Carrasco</b></a><br>
