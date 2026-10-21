@@ -1,0 +1,55 @@
+# Publica cada Release de GitHub en https://corepulse.cl/novedades.
+# Los borradores y las «pre-release» no se publican.
+
+name: Novedades en la web
+
+on:
+  release:
+    types: [published, edited, deleted]
+
+jobs:
+  publicar:
+    if: ${{ !github.event.release.draft && !github.event.release.prerelease }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Enviar a Supabase
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_KEY: ${{ secrets.SUPABASE_NOVEDADES_KEY }}
+          ACCION: ${{ github.event.action }}
+          PRIVADO: ${{ github.event.repository.private }}
+          RELEASE: ${{ toJson(github.event.release) }}
+        run: |
+          set -euo pipefail
+          # Quita espacios, saltos de línea y comillas que se cuelan al pegar los secretos.
+          URL=$(printf '%s' "$SUPABASE_URL" | tr -d '[:space:]"' | sed 's:/*$::')
+          SUPABASE_KEY=$(printf '%s' "$SUPABASE_KEY" | tr -d '[:space:]"')
+          [ -n "$URL" ] || { echo "::error::Falta el secreto SUPABASE_URL"; exit 1; }
+          [ -n "$SUPABASE_KEY" ] || { echo "::error::Falta el secreto SUPABASE_NOVEDADES_KEY"; exit 1; }
+          API="$URL/rest/v1/versiones"
+          ID=$(jq -r '.id' <<<"$RELEASE")
+
+          if [ "$ACCION" = "deleted" ]; then
+            curl -sS --fail-with-body -X DELETE "$API?github_id=eq.$ID" -H "apikey: $SUPABASE_KEY"
+            exit 0
+          fi
+
+          FILA=$(jq -c --arg privado "$PRIVADO" '
+            ((.body // "") | gsub("\r"; "") | split("\n")) as $lineas
+            | {
+                github_id: .id,
+                version: (.tag_name | gsub("[-_]+"; " ")),
+                titulo: (((.name // "") | if . == "" then null else . end) // .tag_name),
+                resumen: ([$lineas[] | select(test("\\S")) | select(test("^\\s*([-*+]\\s|#|>)") | not)]
+                          | join(" ") | .[0:600] | if . == "" then null else . end),
+                cambios: [$lineas[] | select(test("^\\s*[-*+]\\s+")) | sub("^\\s*[-*+]\\s+"; "") | gsub("\\*\\*"; "")],
+                enlace: (if $privado == "true" then null else .html_url end),
+                publicado: ((.published_at // .created_at)[0:10]),
+                origen: "github"
+              }' <<<"$RELEASE")
+
+          curl -sS --fail-with-body -X POST "$API?on_conflict=github_id" \
+            -H "apikey: $SUPABASE_KEY" \
+            -H "Content-Type: application/json" \
+            -H "Prefer: resolution=merge-duplicates,return=minimal" \
+            -d "$FILA"

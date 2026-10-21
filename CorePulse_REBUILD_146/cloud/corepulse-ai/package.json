@@ -1,0 +1,14 @@
+{
+  "name": "corepulse-ai-cloud",
+  "version": "0.10.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test test/knowledge.test.mjs test/service.test.mjs",
+    "deploy": "wrangler deploy",
+    "verify": "node --check src/index.mjs && node --check src/knowledge.mjs && node --test test/knowledge.test.mjs test/service.test.mjs"
+  },
+  "devDependencies": {
+    "wrangler": "4.151.1"
+  }
+}
