@@ -1,3 +1,13 @@
+## REBUILD 146 — Documentación unificada en un solo README (21-10-2026)
+
+- **Motivo:** la pauta de evaluación exige un único README en el repositorio.
+- Se unificaron en el `README.md` de la raíz del repositorio los cuatro documentos que existían: el README de presentación, `docs/TECNICO.md`, el README corto de `CorePulse_REBUILD_146/` y `cloud/corepulse-ai/README.md`. Se eliminaron estos tres últimos.
+- Del README del Worker se conservó solo el estado vigente (rutas, modelo, conocimiento `corepulse-kb-v3`, límites, privacidad y pasos de publicación). Su registro por versiones (REBUILD 113–127) ya está en este historial.
+- Cifras actualizadas al código actual: 350 pruebas Python, 61 pruebas del Worker (antes figuraban 65), ~21.100 líneas Python y ~8.700 QML.
+- Sin cambios de código, dependencias ni del TXT de reglas; ningún archivo de código o prueba leía los README eliminados. **Reversión:** los archivos eliminados siguen en el historial de Git.
+
+---
+
 ## REBUILD 146 — Identidad AMD y tipo de almacenamiento (19-10-2026)
 
 - Base: REBUILD 145 completa; se conserva el TXT original de reglas y todos los módulos existentes.
