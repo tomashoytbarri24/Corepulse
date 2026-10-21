@@ -1,0 +1,46 @@
+{
+  "name": "corepulse-web",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "opennextjs-cloudflare build",
+    "lint": "eslint",
+    "subir-capturas": "node --env-file=.env.local scripts/subir-capturas.mjs",
+    "actualizar-capturas": "node --env-file-if-exists=.env.local scripts/actualizar-capturas.mjs",
+    "preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
+    "deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy",
+    "cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts"
+  },
+  "dependencies": {
+    "@opennextjs/cloudflare": "^1.20.10",
+    "@supabase/ssr": "^0.12.7",
+    "@supabase/supabase-js": "^2.117.3",
+    "lenis": "^1.3.11",
+    "motion": "^12.23.12",
+    "next": "16.3.8",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
+    "server-only": "^0.0.1"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^20",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "eslint": "^9",
+    "eslint-config-next": "16.3.8",
+    "sharp": "^0.35.5",
+    "tailwindcss": "^4",
+    "typescript": "^5",
+    "wrangler": "^4.149.0"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "allowScripts": {
+    "esbuild@0.28.2": true,
+    "unrs-resolver@1.12.2": true,
+    "workerd@1.20261006.1": true
+  }
+}

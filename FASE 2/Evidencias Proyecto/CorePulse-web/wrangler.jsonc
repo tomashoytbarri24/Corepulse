@@ -1,0 +1,23 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "corepulse-web",
+  "main": ".open-next/worker.js",
+  "compatibility_date": "2026-09-01",
+  "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
+  "assets": {
+    "directory": ".open-next/assets",
+    "binding": "ASSETS"
+  },
+  "observability": { "enabled": true },
+  // Límite de peticiones por IP para la API de la app de escritorio (src/lib/app/limite.ts).
+  // namespace_id: número elegido por nosotros, único dentro de la cuenta de Cloudflare.
+  "ratelimits": [
+    { "name": "LIMITE_APP_TOKEN", "namespace_id": "1001", "simple": { "limit": 10, "period": 60 } },
+    { "name": "LIMITE_APP", "namespace_id": "1002", "simple": { "limit": 60, "period": 60 } }
+  ],
+  // Dominio propio (zona corepulse.cl en esta cuenta de Cloudflare).
+  "routes": [
+    { "pattern": "corepulse.cl", "custom_domain": true },
+    { "pattern": "www.corepulse.cl", "custom_domain": true }
+  ]
+}

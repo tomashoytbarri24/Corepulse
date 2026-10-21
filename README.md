@@ -278,3 +278,223 @@ npx.cmd wrangler deploy  # 🚀 publicar en ai.corepulse.cl
 <p align="center">
   <img src="https://capsule-render.vercel.app/api?type=waving&color=0:00d4ff,50:1f6feb,100:0f2027&height=110&section=footer" alt="">
 </p>
+
+<br>
+
+<!-- ===================== README DE LA WEB ===================== -->
+<p align="center">
+  <img src="https://capsule-render.vercel.app/api?type=rect&color=0:38bdf8,100:3ecf8e&height=110&section=header&text=README%20de%20la%20web&fontSize=44&fontColor=0b1220&fontAlignY=55" alt="README de la web">
+</p>
+
+<div align="center">
+
+<img src="FASE%202/Evidencias%20Proyecto/CorePulse-web/docs/intro.gif" alt="Un notebook en 3D: la cámara se acerca a la pantalla y entra en la web de CorePulse" width="720">
+
+# 🌐 CorePulse Web
+
+**La web de CorePulse: precios, descargas, novedades y cuentas de usuario.**
+
+[corepulse.cl](https://corepulse.cl) · [Funciones](https://corepulse.cl/funciones) · [Precios](https://corepulse.cl/precios) · [Descargar](https://corepulse.cl/descargar)
+
+![Next.js 16](https://img.shields.io/badge/Next.js-16-000?logo=nextdotjs)
+![React 19](https://img.shields.io/badge/React-19-149eca?logo=react&logoColor=white)
+![Tailwind 4](https://img.shields.io/badge/Tailwind-4-38bdf8?logo=tailwindcss&logoColor=white)
+![Supabase](https://img.shields.io/badge/Supabase-DB%20%C2%B7%20Auth%20%C2%B7%20Storage-3ecf8e?logo=supabase&logoColor=white)
+![Cloudflare Workers](https://img.shields.io/badge/Cloudflare-Workers-f38020?logo=cloudflare&logoColor=white)
+
+</div>
+
+> 📁 El código de la web está en [`FASE 2/Evidencias Proyecto/CorePulse-web/`](FASE%202/Evidencias%20Proyecto/CorePulse-web). Todas las rutas y comandos de esta parte son relativos a esa carpeta.
+
+**Todo el contenido sale de Supabase**: textos, precios, planes, funciones, novedades, preguntas, legales e imágenes. En el código solo quedan etiquetas de interfaz (botones, menús). ¿Quieres cambiar un precio? Se edita una fila en Supabase y no hace falta tocar el código.
+
+**Stack:** Next.js 16 (React 19) · Tailwind CSS 4 · Motion + Lenis (animaciones) · Supabase (base de datos, Auth y Storage) · Cloudflare Workers con OpenNext (hosting) en `https://corepulse.cl`.
+
+### ⚡ CorePulse Web en 30 segundos
+
+```mermaid
+flowchart LR
+    TU["🧑‍💻 Tú<br/>Table Editor"] -->|editas una fila| DB[("Supabase<br/>tablas + Storage")]
+    DB -->|lectura| CF["☁️ Cloudflare Worker<br/>Next.js + OpenNext"]
+    CF <-->|"caché 60 s<br/>respaldo 7 días"| CACHE[("Caché de<br/>Cloudflare")]
+    CF -->|página| WEB["🌐 corepulse.cl"]
+    APP["🖥️ App de escritorio"] -->|"/api/app/*"| CF
+    CF -->|"cuentas y planes"| DB
+```
+
+Si Supabase se cae, la web sigue funcionando con la última copia guardada.
+
+#### Así inicia sesión la app de escritorio (sin pedir la contraseña)
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant App as 🖥️ App
+    participant Nav as 🌐 Navegador
+    participant Web as ☁️ corepulse.cl
+    App->>App: genera verificador secreto<br/>y escucha en 127.0.0.1
+    App->>Nav: abre /app/conectar?reto=SHA-256(verificador)
+    Nav->>Web: el usuario inicia sesión y pulsa «Autorizar este equipo»
+    Web-->>App: redirige a 127.0.0.1/callback con un código (2 min)
+    App->>Web: POST /api/app/token (código + verificador)
+    Web-->>App: token de equipo 🎟️
+    App->>Web: GET /api/app/yo
+    Web-->>App: nombre, email y plan
+```
+
+### 🚀 Puesta en marcha
+
+<details>
+<summary><b>1. Supabase</b> · base de datos, cuentas e imágenes</summary>
+
+1. **SQL Editor** → ejecuta en orden los archivos de `supabase/migrations/`:
+   1. `…_contenido.sql`: tablas del contenido, seguridad (RLS) y bucket `capturas`.
+   2. `…_datos_iniciales.sql`: el contenido actual de la web (se puede repetir sin duplicar).
+   3. `…_cuentas.sql`: perfiles de usuario con su plan.
+   4. `…_precios_clp_y_limite_free.sql`: precios en pesos chilenos y plan Free con 2 usos por función.
+   5. `…_app_escritorio.sql`: inicio de sesión de la app de escritorio.
+   6. `…_caducidad_tokens_app.sql`: los tokens de la app caducan (30 días sin uso o 180 días desde que se conectó el equipo).
+   7. `…_administradores.sql`: cuentas admin que pueden cambiar los precios desde `/cuenta/admin`.
+   8. `…_gestionar_admins.sql`: los admins dan o quitan admin a otras cuentas por email.
+   9. `…_capturas_windows.sql`: usa las capturas sacadas en Windows (con todas las métricas visibles).
+   10. `…_novedades_github.sql`: vacía Novedades y la prepara para recibir las versiones desde GitHub.
+2. **Authentication → URL Configuration:**
+   - *Site URL:* `https://corepulse.cl`.
+   - *Redirect URLs:* añade `https://corepulse.cl/auth/callback` y `http://localhost:3000/auth/callback`.
+3. **Authentication → Sign In / Providers → Email:** deja activado *Confirm email*.
+4. Copia `.env.example` como `.env.local` y rellena las claves (**Project Settings → API Keys**).
+5. Sube las imágenes al Storage:
+   ```bash
+   npm run subir-capturas
+   ```
+
+</details>
+
+<details>
+<summary><b>2. Cloudflare Workers</b> · hosting en corepulse.cl</summary>
+
+1. **Workers & Pages → Create → Import a repository** → elige el repositorio (Workers Builds) e indica como *Root directory* la carpeta `FASE 2/Evidencias Proyecto/CorePulse-web`. Usa la configuración por defecto: `npm run build` compila con OpenNext y `wrangler.jsonc` define el Worker y los dominios `corepulse.cl` y `www.corepulse.cl`.
+2. Las variables públicas de compilación (`NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`, `NEXT_PUBLIC_SITE_URL`) están en `.env.production`. Si prefieres definirlas en Cloudflare, ponlas en **Settings → Build → Variables** y en **Settings → Variables and Secrets**.
+3. Cada `git push` a la rama configurada en Workers Builds vuelve a publicar. A mano: `npm run deploy`.
+
+> [!WARNING]
+> Las variables `NEXT_PUBLIC_*` se incrustan al compilar: si las cambias, lanza una nueva compilación.
+> **Nunca** pongas `SUPABASE_SECRET_KEY` en Cloudflare: solo se usa en tu equipo para subir imágenes.
+
+</details>
+
+### ✏️ Editar el contenido
+
+Todo se edita en **Supabase → Table Editor**. La web se actualiza sola en un máximo de **60 segundos**: las lecturas de Supabase se guardan un minuto en la caché de Cloudflare (`src/lib/supabase/cache.ts`). Si Supabase falla, la web sigue mostrando la última copia guardada (hasta 7 días). En local (`npm run dev`) no hay caché y los cambios se ven al instante.
+
+<details>
+<summary><b>¿Qué tabla cambia qué?</b></summary>
+
+| Tabla | Qué controla |
+|---|---|
+| `ajustes` | Textos por página en JSON: `sitio` (nombre, versión, enlace de descarga, email de soporte), `inicio`, `funciones`, `precios`, `descargar`, `novedades` |
+| `planes` | Planes Free/Pro: nombre, precios mensual y anual, botón. `moneda` con código ISO (`CLP`, `USD`…) usa el formato oficial (`$4.990`) |
+| `plan_caracteristicas` | Filas de la comparativa (`true`, `false` o un texto como `"2 usos"`) |
+| `preguntas` | Preguntas frecuentes (sección `precios`) |
+| `funciones` | Módulos de la página Funciones; `en_portada` los muestra en la sección fija del inicio |
+| `destacados` | Tarjetas del inicio (icono: `gamepad`, `thermo`, `wrench`, `bolt`, `lock`) |
+| `cifras` | Contadores animados del inicio |
+| `temas` | Galería horizontal de temas |
+| `versiones` | Página Novedades. Se llena sola desde los Releases de GitHub (ver «Novedades desde GitHub» más abajo); también se pueden añadir filas a mano |
+| `documentos_legales` | Términos, privacidad y reembolsos (crear una fila nueva publica `/legal/<slug>`) |
+| `perfiles` | Usuarios registrados y su plan (`free`/`pro`) |
+
+Las imágenes van en **Storage → capturas**; en las tablas se escribe solo el nombre del archivo (`summary.jpg`).
+
+</details>
+
+<details>
+<summary><b>📸 Cambiar capturas</b></summary>
+
+1. Saca las capturas nuevas de la app (mejor en Windows, con la ventana en proporción ~16:9.5, como 1800×1068) y ponlas en `contenido/capturas-nuevas/` con el nombre de la que reemplazan, en cualquier formato: `summary.png`, `health.png`, `tweaks.png`, `cleanup.png`, `themes.png`, `tema_aurora.png`, `tema_violet.png`, `tema_ember.png`, `tema_sakura.png`, `tema_cyber.png`. Puedes cambiar solo algunas.
+2. `npm run actualizar-capturas -- --prueba` las deja preparadas en `contenido/capturas/` para revisarlas (1800×1068, WebP).
+3. `npm run actualizar-capturas` las prepara, las sube a Supabase y cambia las tablas (`funciones`, `temas`, `ajustes`). Necesita `SUPABASE_SECRET_KEY` en `.env.local`.
+4. Haz commit de `contenido/capturas/` para que el repositorio quede igual que la web.
+
+Cada subida usa un nombre nuevo (`summary-20261015-1830.webp`): las imágenes llevan 7 días de caché y con el mismo nombre los navegadores seguirían mostrando la vieja. La captura usada como vista previa en redes (`ajustes.sitio.imagenSocial`) se genera además en JPEG de 1200×630.
+
+</details>
+
+### 📰 Novedades desde GitHub
+
+Cuando publicas un **Release** en el repositorio del programa, una GitHub Action lo guarda en la tabla `versiones` y aparece en [`/novedades`](https://corepulse.cl/novedades) en menos de un minuto. Si editas o borras el Release, la web también se actualiza.
+
+<details>
+<summary><b>Conectarlo (una sola vez) y cómo escribir el Release</b></summary>
+
+1. Ejecuta la migración `…_novedades_github.sql` en Supabase.
+2. En Supabase, **Project Settings → API Keys → Secret keys → New secret key**, llámala `github-novedades`. Úsala solo para esto: si algún día se filtra, la borras sin afectar al resto.
+3. En el repositorio **del programa**, **Settings → Secrets and variables → Actions → New repository secret**:
+   - `SUPABASE_URL`: la URL del proyecto (`https://….supabase.co`).
+   - `SUPABASE_NOVEDADES_KEY`: la clave del paso 2.
+4. Copia [`docs/github/novedades-web.yml`](FASE%202/Evidencias%20Proyecto/CorePulse-web/docs/github/novedades-web.yml) a `.github/workflows/novedades-web.yml` del programa y haz commit.
+
+| En GitHub | En la web |
+|---|---|
+| Etiqueta (tag), sin espacios, p. ej. `REBUILD-146` | La versión: los guiones se ven como espacios («REBUILD 146») |
+| Nombre del Release | El título |
+| Primer párrafo del texto | La explicación corta |
+| Cada línea que empieza por `- ` | Un cambio de la lista |
+
+```markdown
+La limpieza de RAM ahora tarda la mitad y hay un tema nuevo.
+
+- Limpieza de RAM en un clic desde la bandeja.
+- Nuevo tema Ocean.
+```
+
+Los borradores y las *pre-release* no se publican. El enlace «Ver en GitHub» solo aparece si el repositorio del programa es público.
+
+**Detalles técnicos:**
+- Cada Release se guarda en la tabla `versiones` con su `github_id`. Al editar el Release se actualiza la misma fila (`on_conflict=github_id`) y al borrarlo se borra la fila.
+- Columnas: `version` (tag, con `-` y `_` cambiados por espacios), `titulo` (nombre), `resumen` (texto que no es lista ni título, máx. 600 caracteres), `cambios` (líneas `- `, `* ` o `+ `), `enlace` (vacío si el repositorio es privado), `publicado` (fecha del Release), `origen = 'github'`.
+- La web lee Supabase con la caché de 60 segundos, por eso tarda hasta un minuto en verse.
+- La clave vive solo en los Secrets de GitHub, nunca en Cloudflare.
+
+</details>
+
+### 👤 Cuentas
+
+- `/registro`, `/login`, `/recuperar`, `/cuenta`, `/cuenta/contrasena`, `/logout` (las mismas rutas que abre el menú de la app).
+- Contraseña mínima de 8 caracteres y confirmación por email.
+- El **plan** solo lo cambia el servidor o tú desde el panel: la seguridad de la base de datos impide que un usuario se lo cambie.
+- **Admin:** en el SQL Editor, `update public.perfiles set es_admin = true where id = (select id from auth.users where email = 'tu@email.com');`. Hace falta solo para el primer admin: desde `/cuenta/admin` cualquier admin cambia los precios (solo los precios; el resto de la tabla `planes` se sigue editando en Supabase) y da o quita admin a otras cuentas por email. Nadie puede quitarse el admin a sí mismo.
+
+<details>
+<summary><b>🖥️ Inicio de sesión desde la app de escritorio, paso a paso</b></summary>
+
+La app nunca pide la contraseña: abre `/app/conectar` en el navegador y la web la devuelve a la app.
+
+1. La app genera un verificador secreto, abre `/app/conectar?puerto=…&estado=…&reto=…` (reto = SHA-256 del verificador) y escucha solo en `127.0.0.1`.
+2. El usuario inicia sesión (si hace falta) y pulsa **Autorizar este equipo** → la web crea un código de un solo uso (2 min) y redirige a `http://127.0.0.1:<puerto>/callback`.
+3. La app canjea código + verificador en `POST /api/app/token` y recibe un token de equipo.
+4. Con ese token: `GET /api/app/yo` (nombre, email, plan) y `POST /api/app/salir` (cerrar sesión).
+5. El token caduca tras **30 días sin usarse** o a los **180 días** de conectar el equipo. Entonces `GET /api/app/yo` responde `401` y la app debe volver al paso 1.
+6. Límite por IP (Rate Limiting de Cloudflare, en `wrangler.jsonc`): 10 canjes por minuto en `/api/app/token` y 60 peticiones por minuto en `/api/app/yo` y `/api/app/salir`. Al pasarse, la API responde `429` con `Retry-After: 60`.
+
+En la base solo hay huellas SHA-256 de códigos y tokens (tablas `codigos_app` y `sesiones_app`, migración `…_app_escritorio.sql`). Cada usuario ve y desconecta sus equipos en **Mi cuenta**.
+
+</details>
+
+### 🛠️ Comandos
+
+<details>
+<summary><b>Ver todos</b></summary>
+
+```bash
+cd "FASE 2/Evidencias Proyecto/CorePulse-web"
+npm run dev             # desarrollo en http://localhost:3000 (necesita .env.local)
+npm run build           # compilación de producción (OpenNext para Cloudflare)
+npm run preview         # compila y prueba en local con el entorno de Workers
+npm run deploy          # compila y publica en Cloudflare
+npm run lint
+npm run subir-capturas  # sube contenido/capturas a Supabase Storage
+npm run actualizar-capturas  # cambia capturas: prepara, sube y actualiza las tablas (ver «Cambiar capturas»)
+```
+
+</details>
