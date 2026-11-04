@@ -8,7 +8,7 @@ reemplaza a la entrega 146 en esta carpeta; su evolución permanece en el histor
 - [CorePulse REBUILD 177](CorePulse_REBUILD_177/README.md): versión actual del escritorio.
 - [Historial consolidado](CorePulse_REBUILD_177/versiones/HISTORIAL.md): cambios y revisión 176/177.
 - [Validación 177](CorePulse_REBUILD_177/versiones/VALIDACION_177.json): resultados y SHA-256 del instalador.
-- [CorePulse web](CorePulse-web/README.md): material web conservado del repositorio.
+- [CorePulse web](../../README.md#web): material web conservado del repositorio.
 
 ## Alcance de la revisión
 
