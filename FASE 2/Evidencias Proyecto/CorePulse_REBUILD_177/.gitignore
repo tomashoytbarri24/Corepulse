@@ -1,0 +1,28 @@
+# Entornos, cachés y salidas locales
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+venv/
+node_modules/
+.wrangler/
+.zig-cache/
+zig-cache/
+build/
+dist/
+*.pdb
+*.ilk
+*.obj
+*.o
+# Los instaladores se distribuyen aparte; conservar el manifiesto SHA256.
+/release/*.exe
+# Configuración privada y datos de usuario
+.env
+.env.*
+!.env.example
+.dev.vars
+*.pem
+*.key
+*.sqlite3
+*.sqlite3-wal
+*.sqlite3-shm
