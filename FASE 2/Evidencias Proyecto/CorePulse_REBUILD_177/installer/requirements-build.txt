@@ -1,0 +1,8 @@
+PySide6==6.12.0
+psutil==7.2.2
+pythonnet==3.2.1
+HardwareMonitor==1.2.1
+clr_loader==0.3.1
+cffi==2.1.1
+pyinstaller==6.22.3
+pyinstaller-hooks-contrib==2026.9

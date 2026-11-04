@@ -1,0 +1,22 @@
+CorePulse - componentes incluidos en la distribución de Windows
+
+Python: Python Software Foundation License. https://docs.python.org/3/license.html
+Qt / PySide6 / Shiboken6: LGPLv3 y licencias de terceros. https://www.qt.io/licensing/
+Las bibliotecas Qt permanecen como DLL independientes en _internal. Los avisos
+y licencias disponibles en los paquetes originales se incluyen en esta carpeta.
+Código fuente y versiones: https://download.qt.io/official_releases/QtForPython/
+psutil: BSD-3-Clause. https://github.com/giampaolo/psutil
+pythonnet: MIT. https://github.com/pythonnet/pythonnet
+clr-loader: MIT. https://github.com/pythonnet/clr-loader
+cffi: MIT. https://foss.heptapod.net/pypy/cffi
+PyInstaller: GPLv2 con excepción de distribución del bootloader.
+https://pyinstaller.org/en/stable/license.html
+HardwareMonitor / LibreHardwareMonitor: MPL-2.0 y licencias de sus componentes.
+https://github.com/LibreHardwareMonitor/LibreHardwareMonitor
+PresentMon y motor gráfico: consultar _internal/bin/*LICENSE*.txt.
+
+PawnIO y Ookla: se conserva su preparación oficial bajo demanda/primer inicio.
+No se incluyen instaladores ni ejecutables de estos productos en este paquete.
+No se aceptan automáticamente los términos de la prueba Speedtest.
+
+Esta compilación de prueba no está firmada digitalmente por CorePulse.

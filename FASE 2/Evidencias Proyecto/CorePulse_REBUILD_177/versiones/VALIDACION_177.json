@@ -1,0 +1,95 @@
+{
+  "version": "177",
+  "reviewedOn": "2026-11-03",
+  "baseVersion": "176",
+  "comparison": {
+    "added": [],
+    "removed": [],
+    "changed": [
+      "README.md",
+      "core/health/game_sessions.py",
+      "core/health/monitoring_insights.py",
+      "core/overlay.py",
+      "core/runtime.py",
+      "installer/CorePulse.iss",
+      "installer/CorePulse.spec",
+      "installer/README.md",
+      "installer/assets/cp-browse.png",
+      "installer/assets/cp-cancel.png",
+      "installer/assets/cp-check_on.png",
+      "installer/assets/cp-close.png",
+      "installer/assets/cp-finish.png",
+      "installer/assets/cp-install.png",
+      "installer/assets/cp-open.png",
+      "installer/build_installer.ps1",
+      "installer/version_info.txt",
+      "main.py",
+      "tests/test_game_sessions.py",
+      "tests/test_overlay_activation.py",
+      "tests/test_runtime.py",
+      "ui/Main.qml",
+      "ui/OverlayPage.qml",
+      "ui/Overview.qml",
+      "versiones/HISTORIAL.md"
+    ],
+    "same": 336
+  },
+  "pythonFocused": {
+    "passed": 105,
+    "core": 64,
+    "sessions": 7,
+    "ai": 34
+  },
+  "node": {
+    "passed": 61,
+    "failed": 0
+  },
+  "historical": {
+    "passed177": 286,
+    "failed177": 63,
+    "passed176": 286,
+    "failed176": 63,
+    "newFailures": []
+  },
+  "installer": {
+    "name": "CorePulse_Setup_177_x64.exe",
+    "bytes": 172701904,
+    "sha256": "214df947b9c45d570bfd738a3e0855804fb6e589e3dc4bc283457caac34a4d67",
+    "suppliedInstallerUnchanged": true
+  },
+  "functionalChanges": [
+    "Per-executable authorization for internal overlay",
+    "asInvoker by default, optional elevation",
+    "PawnIO installation on request",
+    "Damaged SQLite quarantine"
+  ],
+  "notes": [
+    "The 176 validation is historical, not evidence of 177 validation.",
+    "No new commercial-game or multi-PC compatibility claim is made by this documentation review.",
+    "Source smoke tests: Overlay and game_sessions load without QML warnings. CPU temperature is unavailable without elevation on the test PC.",
+    "Active anti-cheat process/service detection is global and can block the internal module even for another executable.",
+    "No installer rebuild or installation was performed during this review; the supplied installer is preserved."
+  ],
+  "sourceSmoke": [
+    {
+      "version": "177",
+      "qmlLoaded": true,
+      "administrator": false,
+      "page": "overlay",
+      "qmlWarnings": [],
+      "frozen": false,
+      "sensorsPrepared": true,
+      "cpuTemperatureAvailable": false
+    },
+    {
+      "version": "177",
+      "qmlLoaded": true,
+      "administrator": false,
+      "page": "game_sessions",
+      "qmlWarnings": [],
+      "frozen": false,
+      "sensorsPrepared": true,
+      "cpuTemperatureAvailable": false
+    }
+  ]
+}

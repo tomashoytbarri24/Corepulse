@@ -12,7 +12,7 @@
   <img src="https://img.shields.io/badge/Python-3.12+-3776AB?style=for-the-badge&logo=python&logoColor=white">
   <img src="https://img.shields.io/badge/Qt-PySide6%20%2F%20QML-41CD52?style=for-the-badge&logo=qt&logoColor=white">
   <img src="https://img.shields.io/badge/Cloudflare-Workers-F38020?style=for-the-badge&logo=cloudflare&logoColor=white">
-  <img src="https://img.shields.io/badge/versi%C3%B3n-REBUILD%20146-8A2BE2?style=for-the-badge">
+  <img src="https://img.shields.io/badge/versi%C3%B3n-REBUILD%20177-8A2BE2?style=for-the-badge">
 </p>
 
 <p align="center">
@@ -42,21 +42,27 @@ Uno para temperaturas, otro para el disco, otro para los FPS, otro para limpiar.
 | 🔍 | **Diagnóstico** | Un botón ❤️‍🔥 que late mientras analiza y termina en un **PDF** listo para compartir |
 | 🤖 | **CorePulse AI** | Te explica el diagnóstico con **fuentes oficiales** (Microsoft, Intel, AMD, NVIDIA) y compara la salud de tu PC **entre arranques** |
 | ⚙️ | **Tweaks de Windows 11** | 78 optimizaciones que guardan **cómo estaba todo antes**: un clic y vuelve atrás ↩️ |
-| 🧹 | **Limpieza** | Temporales, caché, RAM, duplicados y Papelera, siempre con confirmación |
-| 🎮 | **Gaming** | Overlay con **FPS reales** (RTSS), Game Boost reversible y plan de energía automático por juego |
+| 🧹 | **Limpieza** | Temporales, caché, RAM, duplicados y Papelera; RAM a fondo también desde bandeja y panel rápido |
+| 🎮 | **Gaming** | Overlay propio, FPS/frametime por ETW, sesiones, registros de problemas y perfiles de energía por juego |
 | 🏙️ | **Benchmark GPU** | Una ciudad de neón en **DirectX 11** que exprime tu tarjeta y guarda el historial para comparar |
 | 📈 | **Tendencias** | Tu uso agrupado por **sesión de Windows**, para ver si el problema se repite |
 | 🌐 | **Red avanzada** | Adaptadores, tráfico y Speedtest, con tu IP escondida detrás de un 👁️ |
 | 🎨 | **Temas** | 15 paletas con estilo **Liquid Glass** 🫧 |
 
-### 🆕 Novedades de la versión actual (REBUILD 146)
+### 🆕 Versión actual: REBUILD 177
 
-- Logotipo **AMD** completo, con el nombre de la marca y su flecha oficial.
-- Icono y etiqueta de almacenamiento según lo que informa Windows: **HDD mecánico, SSD SATA o SSD NVMe**, y un icono genérico cuando Windows no informa el tipo.
-- Almacenamiento en **violeta fijo**; el cian de RAM y los colores de CPU/GPU no cambian.
-- Sin dependencias nuevas ni cambios en los motores de telemetría.
+- Conserva el editor de overlay, los módulos propios para D3D9/10/11/12 y OpenGL,
+  el host de escritorio, sesiones, perfiles, frametime y registros con PDF.
+- El módulo interno requiere autorización por ejecutable. La detección de
+  antitrampas lo bloquea; no se intenta sortear esa protección.
+- Abre sin administrador y ofrece elevación opcional. La temperatura de CPU y
+  algunas funciones pueden indicar N/A sin los permisos/controladores necesarios.
+- PawnIO se instala a solicitud y las bases SQLite dañadas se apartan para
+  recuperar el inicio sin eliminar la copia dañada.
+- El historial concentra los cambios anteriores; no hay archivos CAMBIOS en la raíz.
 
-El detalle de cada versión está en [`versiones/HISTORIAL.md`](FASE%202/Evidencias%20Proyecto/CorePulse_REBUILD_146/versiones/HISTORIAL.md) 📜
+Entrega y validación: [índice de evidencias de Fase 2](FASE%202/Evidencias%20Proyecto/README.md).
+Detalle: [versiones/HISTORIAL.md](FASE%202/Evidencias%20Proyecto/CorePulse_REBUILD_177/versiones/HISTORIAL.md).
 
 ---
 
@@ -85,19 +91,21 @@ El detalle de cada versión está en [`versiones/HISTORIAL.md`](FASE%202/Evidenc
 
 ---
 
-## 🚀 Probarlo en 2 pasos
+## 🚀 Instalar o ejecutar el código
 
-```bash
-# 1️⃣ Entrá a la carpeta de la versión actual
-cd "FASE 2/Evidencias Proyecto/CorePulse_REBUILD_146"
+Para instalar, usa **CorePulse_Setup_177_x64.exe**, entregado por separado del
+código fuente. Incluye Python y Qt; el usuario no necesita instalar Python ni RTSS.
+El EXE supera el límite de tamaño de Git y debe adjuntarse a una Release.
 
-# 2️⃣ Doble clic o desde la terminal
-Iniciar_CorePulse.bat
+Para trabajar con el código, en Windows 10/11 x64 y Python 3.12+:
+
+```powershell
+cd "FASE 2/Evidencias Proyecto/CorePulse_REBUILD_177"
+.\Iniciar_CorePulse.bat
 ```
 
-> ☕ La primera vez tarda un poco: prepara su propio entorno de Python e instala lo que necesita.
-> Requisitos: **Windows 10/11 de 64 bits** y **Python 3.12+**.
-> El encabezado de la app debe decir **Rebuild 146**. Los informes se guardan en `%LOCALAPPDATA%\CorePulse\reportes`.
+El primer inicio prepara las dependencias. Antes de actualizar, cierra CorePulse
+desde la bandeja y los juegos. Los PDF quedan en `%LOCALAPPDATA%\CorePulse\reportes`.
 
 ---
 
@@ -106,20 +114,18 @@ Iniciar_CorePulse.bat
 > 🧭 Para quien va a meter mano al código. Si solo querés usar la app, con lo de arriba alcanza.
 
 <p>
-  <img src="https://img.shields.io/badge/Python-~21.100_l%C3%ADneas-3776AB?logo=python&logoColor=white">
-  <img src="https://img.shields.io/badge/QML-~8.700_l%C3%ADneas-41CD52?logo=qt&logoColor=white">
-  <img src="https://img.shields.io/badge/pruebas_Python-350-brightgreen?logo=pytest&logoColor=white">
+  <img src="https://img.shields.io/badge/pruebas_enfocadas_Python-105-brightgreen?logo=pytest&logoColor=white">
   <img src="https://img.shields.io/badge/pruebas_Worker-61-brightgreen?logo=nodedotjs&logoColor=white">
-  <img src="https://img.shields.io/badge/historial-136_versiones_REBUILD-orange">
+  <img src="https://img.shields.io/badge/versi%C3%B3n-177-orange">
 </p>
 
 ### 🗺️ El mapa del tesoro (arquitectura)
 
 ```mermaid
 flowchart LR
-    UI["🎨 ui/*.qml<br/>24 componentes"] --> C["🎛️ main.py<br/>controladores Qt"]
+    UI["🎨 ui/*.qml"] --> C["🎛️ main.py<br/>controladores Qt"]
     C --> CORE["🧠 core/<br/>monitoring · health · maintenance<br/>tweaks · benchmark · ai · cuenta"]
-    CORE --> WIN["🪟 Windows<br/>psutil · HardwareMonitor · PowerShell/CIM<br/>RTSS · DirectX 11 · powercfg"]
+    CORE --> WIN["🪟 Windows<br/>psutil · HardwareMonitor · PowerShell/CIM<br/>Overlay propio · ETW · DirectX · powercfg"]
     CORE --> DB[("💾 %LOCALAPPDATA%\\CorePulse<br/>SQLite · JSON/JSONL · DPAPI")]
     CORE -- "🔐 solo con permiso" --> AI["☁️ ai.corepulse.cl<br/>Cloudflare Worker"]
     AI --> KB["📚 knowledge.mjs<br/>RAG curado"]
@@ -130,7 +136,7 @@ flowchart LR
 y lo pesado (WMI, sensores, NVIDIA-SMI) corre en hilos o procesos aparte para que la UI no se congele 🧊.
 
 <details>
-<summary>📂 <b>¿Qué hay en cada carpeta?</b> (dentro de <code>FASE 2/Evidencias Proyecto/CorePulse_REBUILD_146/</code>)</summary>
+<summary>📂 <b>¿Qué hay en cada carpeta?</b> (dentro de <code>FASE 2/Evidencias Proyecto/CorePulse_REBUILD_177/</code>)</summary>
 
 <br>
 
@@ -139,7 +145,7 @@ y lo pesado (WMI, sensores, NVIDIA-SMI) corre en hilos o procesos aparte para qu
 | `ui/` | Pantallas QML. `GlassPanel.qml` es el material Liquid Glass 🫧 que usan todas las tarjetas |
 | `core/monitoring/` | Telemetría en vivo (CPU, GPU multivendedor, RAM, disco) |
 | `core/health/` | Salud, diagnóstico, PDF, FPS, Game Boost, tendencias, almacenamiento |
-| `core/maintenance/` | Limpieza, red, drivers, inicio de Windows, Speedtest, test de audio |
+| `core/maintenance/` | Limpieza, red, inicio de Windows, Speedtest y test de audio |
 | `core/tweaks/` | Motor de tweaks reversibles 🔄 |
 | `core/ai.py` | Cliente de CorePulse AI Cloud |
 | `core/benchmark_gpu.py` | El benchmark DirectX 11 de la ciudad de neón 🏙️ |
@@ -166,7 +172,7 @@ Todo vive en `%LOCALAPPDATA%\CorePulse`:
 ### 🏃 Ejecutar y probar
 
 ```bash
-cd "FASE 2/Evidencias Proyecto/CorePulse_REBUILD_146"
+cd "FASE 2/Evidencias Proyecto/CorePulse_REBUILD_177"
 
 # ▶️ Arrancar (prepara el entorno aislado la primera vez)
 Iniciar_CorePulse.bat
@@ -175,13 +181,17 @@ Iniciar_CorePulse.bat
 python -B -m pytest -p no:cacheprovider -q tests
 ```
 
+**Validación del 03/11/2026:** 105 pruebas enfocadas Python y 61 de Node aprobadas.
+La suite histórica tiene 286 aprobadas y las mismas 63 fallas de la 176; no se
+declara completamente aprobada. Overlay y Sesiones abren sin avisos QML.
+
 **Dependencias** (se instalan solas): `PySide6` · `psutil` · `pythonnet` · `HardwareMonitor`
 
 ---
 
 ## ☁️ CorePulse AI Cloud
 
-El servidor de la IA vive en `FASE 2/Evidencias Proyecto/CorePulse_REBUILD_146/cloud/corepulse-ai/`: un **Cloudflare Worker** (`corepulse-ai-cloud`) publicado en **`https://ai.corepulse.cl`**. La app lo usa por defecto: el usuario no configura URL ni claves.
+El servidor de la IA vive en `FASE 2/Evidencias Proyecto/CorePulse_REBUILD_177/cloud/corepulse-ai/`: un **Cloudflare Worker** (`corepulse-ai-cloud`) publicado en **`https://ai.corepulse.cl`**. La app lo usa por defecto: el usuario no configura URL ni claves.
 
 | Pieza | Detalle |
 |---|---|
@@ -215,7 +225,7 @@ El servidor de la IA vive en `FASE 2/Evidencias Proyecto/CorePulse_REBUILD_146/c
 Desde PowerShell, con Node.js 22+:
 
 ```powershell
-cd "FASE 2\Evidencias Proyecto\CorePulse_REBUILD_146\cloud\corepulse-ai"
+cd "FASE 2\Evidencias Proyecto\CorePulse_REBUILD_177\cloud\corepulse-ai"
 npm.cmd install          # 📦 dependencias (Wrangler 4.151.1 fijado)
 npm.cmd run verify       # ✅ sintaxis + 61 pruebas (simuladas, no gastan tokens)
 npm.cmd audit            # 🔍 revisar antes de publicar; nunca "npm audit fix --force" a ciegas
