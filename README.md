@@ -1,102 +1,136 @@
+<!-- ===================== CABECERA ===================== -->
 <p align="center">
-  <img src="docs/corepulse_banner.svg" width="960" alt="CorePulse — El pulso real de tu PC">
+  <img src="https://capsule-render.vercel.app/api?type=waving&color=0:0f2027,50:1f6feb,100:00d4ff&height=190&section=header&text=CorePulse&fontSize=70&fontColor=ffffff&animation=fadeIn&fontAlignY=38&desc=El%20pulso%20real%20de%20tu%20PC%20%F0%9F%92%93&descAlignY=60&descSize=20" alt="CorePulse">
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Windows-10%20%7C%2011-1e9bdb?style=flat-square" alt="Windows 10 y 11">
-  <img src="https://img.shields.io/badge/Python-3.12+-3776ab?style=flat-square" alt="Python 3.12 o posterior para desarrollo">
-  <img src="https://img.shields.io/badge/Interfaz-Qt%20%2F%20QML-249f91?style=flat-square" alt="Qt y QML">
-  <a href="FASE%202/Evidencias%20Proyecto/CorePulse_REBUILD_177"><img src="https://img.shields.io/badge/REBUILD-177-956bda?style=flat-square" alt="REBUILD 177"></a>
+  <a href="#"><img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=20&duration=2800&pause=900&color=00D4FF&center=true&vCenter=true&width=620&lines=%F0%9F%A9%BA+Diagn%C3%B3stico+con+datos+reales;%F0%9F%94%84+Optimizaciones+que+se+pueden+deshacer;%F0%9F%A4%96+Una+IA+que+no+inventa+nada;%F0%9F%8E%AE+FPS+reales+o+N%2FA%2C+sin+trampa" alt="Typing SVG"></a>
 </p>
 
 <p align="center">
-  <a href="https://corepulse.cl">Sitio web</a> ·
-  <a href="FASE%202/Evidencias%20Proyecto/CorePulse_REBUILD_177">Aplicación</a> ·
-  <a href="#web">Documentación web</a> ·
-  <a href="FASE%202/Evidencias%20Proyecto/CorePulse_REBUILD_177/versiones/HISTORIAL.md">Historial</a>
+  <img src="https://img.shields.io/badge/Windows-10%20%7C%2011-0078D6?style=for-the-badge&logo=windows&logoColor=white">
+  <img src="https://img.shields.io/badge/Python-3.12+-3776AB?style=for-the-badge&logo=python&logoColor=white">
+  <img src="https://img.shields.io/badge/Qt-PySide6%20%2F%20QML-41CD52?style=for-the-badge&logo=qt&logoColor=white">
+  <img src="https://img.shields.io/badge/Cloudflare-Workers-F38020?style=for-the-badge&logo=cloudflare&logoColor=white">
+  <img src="https://img.shields.io/badge/versi%C3%B3n-REBUILD%20146-8A2BE2?style=for-the-badge">
 </p>
-
-CorePulse reúne el monitoreo del equipo, el diagnóstico de Windows y las herramientas de rendimiento en una aplicación. Permite consultar el hardware, revisar el estado de los discos y registrar lo que ocurre durante una partida.
 
 <p align="center">
-  <img src="docs/corepulse_temas.gif" width="820" alt="Vista de CorePulse y sus temas oscuros">
+  <img src="docs/corepulse_temas.gif" width="820" alt="CorePulse cambiando de tema">
 </p>
 
-## Funciones
+---
 
-| Área | Qué puedes hacer |
-|---|---|
-| **Monitoreo** | Consultar CPU, GPU, RAM, almacenamiento y las temperaturas disponibles. |
-| **Diagnóstico y salud** | Revisar el sistema, consultar SMART/NVMe y generar un informe PDF. |
-| **Juegos** | Usar el overlay propio, ver FPS y frametime, guardar sesiones y aplicar perfiles por juego. |
-| **Benchmark** | Medir CPU, RAM, disco y GPU DirectX 11; guardar y comparar resultados. |
-| **Mantenimiento** | Limpiar temporales, cachés y RAM; aplicar ajustes reversibles de Windows. |
-| **Red** | Consultar adaptadores, tráfico y pruebas de velocidad. |
-| **CorePulse AI** | Pedir explicaciones sobre las lecturas y comparar sesiones con los permisos elegidos. |
-| **Personalización** | Elegir entre 15 temas oscuros y ajustar el diseño del overlay. |
+## 🤔 ¿Qué es CorePulse?
 
-Cuando una lectura no está disponible, se muestra **N/A**. La cobertura de los sensores depende del hardware, del controlador y de los permisos de Windows.
+¿Alguna vez abriste **cinco programas distintos** solo para saber por qué tu PC anda lenta? 🐌
+Uno para temperaturas, otro para el disco, otro para los FPS, otro para limpiar...
 
-## Empezar
+**CorePulse junta todo en una sola app** 🧩 y además te lo explica en español, sin humo:
 
-**Con el instalador:** ejecuta `CorePulse_Setup_177_x64.exe`. Incluye la aplicación, Python, Qt y sus componentes empaquetados. El instalador 177 se conserva localmente; su publicación en [Releases](https://github.com/tomashoytbarri24/Corepulse/releases) queda pendiente.
+> 💡 Si un sensor no existe en tu equipo, CorePulse te muestra **`N/A`**.
+> Nunca vas a ver un número inventado. **Dato real o nada.**
 
-**Desde el código:** necesitas Windows 10/11 de 64 bits y Python 3.12 o posterior. Desde la raíz del repositorio, abre PowerShell y ejecuta:
+---
 
-```powershell
-cd "FASE 2/Evidencias Proyecto/CorePulse_REBUILD_177"
-.\Iniciar_CorePulse.bat
-```
+## ✨ Lo que trae
 
-El primer inicio prepara el entorno. Algunas lecturas y acciones requieren permisos de administrador. El módulo interno del overlay se autoriza por juego; las exclusiones de antitrampas se explican en la documentación de la aplicación.
+| | Módulo | Qué hace |
+|:-:|---|---|
+| 📊 | **Resumen en vivo** | CPU, GPU (🟢 NVIDIA · 🔴 AMD · 🔵 Intel), RAM y almacenamiento en tiempo real, con el logo de cada fabricante |
+| 🩺 | **Centro de Salud** | Revisa Windows, repara con **DISM/SFC**, lee **SMART/NVMe** y te dice cuánto se gastó tu disco |
+| 🔍 | **Diagnóstico** | Un botón ❤️‍🔥 que late mientras analiza y termina en un **PDF** listo para compartir |
+| 🤖 | **CorePulse AI** | Te explica el diagnóstico con **fuentes oficiales** (Microsoft, Intel, AMD, NVIDIA) y compara la salud de tu PC **entre arranques** |
+| ⚙️ | **Tweaks de Windows 11** | 78 optimizaciones que guardan **cómo estaba todo antes**: un clic y vuelve atrás ↩️ |
+| 🧹 | **Limpieza** | Temporales, caché, RAM, duplicados y Papelera, siempre con confirmación |
+| 🎮 | **Gaming** | Overlay con **FPS reales** (RTSS), Game Boost reversible y plan de energía automático por juego |
+| 🏙️ | **Benchmark GPU** | Una ciudad de neón en **DirectX 11** que exprime tu tarjeta y guarda el historial para comparar |
+| 📈 | **Tendencias** | Tu uso agrupado por **sesión de Windows**, para ver si el problema se repite |
+| 🌐 | **Red avanzada** | Adaptadores, tráfico y Speedtest, con tu IP escondida detrás de un 👁️ |
+| 🎨 | **Temas** | 15 paletas con estilo **Liquid Glass** 🫧 |
 
-## Versión actual
+### 🆕 Novedades de la versión actual (REBUILD 146)
 
-La **REBUILD 177** conserva el overlay propio, su editor, la línea de frametime, las sesiones y los registros de problemas con PDF. Incorpora autorización por ejecutable, elevación opcional y recuperación del inicio ante una base SQLite dañada.
+- Logotipo **AMD** completo, con el nombre de la marca y su flecha oficial.
+- Icono y etiqueta de almacenamiento según lo que informa Windows: **HDD mecánico, SSD SATA o SSD NVMe**, y un icono genérico cuando Windows no informa el tipo.
+- Almacenamiento en **violeta fijo**; el cian de RAM y los colores de CPU/GPU no cambian.
+- Sin dependencias nuevas ni cambios en los motores de telemetría.
 
-[Ver la aplicación](FASE%202/Evidencias%20Proyecto/CorePulse_REBUILD_177/README.md) · [Historial de versiones](FASE%202/Evidencias%20Proyecto/CorePulse_REBUILD_177/versiones/HISTORIAL.md) · [Validación de la entrega](FASE%202/Evidencias%20Proyecto/CorePulse_REBUILD_177/versiones/VALIDACION_177.json)
+El detalle de cada versión está en [`versiones/HISTORIAL.md`](FASE%202/Evidencias%20Proyecto/CorePulse_REBUILD_146/versiones/HISTORIAL.md) 📜
 
-## Organización del proyecto
+---
+
+## 🛡️ Las 3 reglas de oro
 
 ```text
-FASE 1/                         Documentación de la primera fase
-FASE 2/
-├── Evidencias Grupales/
-├── Evidencias Individuales/
-└── Evidencias Proyecto/
-    ├── CorePulse_REBUILD_177/   Aplicación de Windows
-    └── CorePulse-web/          Sitio web y cuentas
-FASE 3/                         Documentación de la tercera fase
-docs/                           Recursos de este README
+1️⃣  Dato real o N/A          → nada se estima, nada se inventa
+2️⃣  Todo se puede deshacer    → snapshot ➜ verificación ➜ restaurar
+3️⃣  Nada sale sin permiso     → compartir hardware o historial viene APAGADO
 ```
 
-La web del proyecto está en **[corepulse.cl](https://corepulse.cl)**. Su código y las evidencias académicas se conservan junto a la aplicación en la estructura por fases.
-
-## Documentación
-
 <details>
-<summary><b>Aplicación de Windows y CorePulse AI</b> · arquitectura, datos y desarrollo</summary>
+<summary>🔐 <b>¿Qué datos salen de mi PC?</b> (clic para ver)</summary>
 
-### Arquitectura y desarrollo
+<br>
 
-#### Arquitectura
+| Dato | ¿Sale del equipo? |
+|---|---|
+| Lecturas de sensores, historial, respaldos de tweaks | ❌ Nunca: quedan en `%LOCALAPPDATA%\CorePulse` |
+| Preguntas que escribís a CorePulse AI | ✅ Solo las que vos enviás |
+| Resumen de hardware para la IA | ⚪ Solo si activás ese permiso |
+| Resumen de Tendencias para la IA | ⚪ Solo si activás ese otro permiso |
+| IP, MAC, SSID, ubicación | ❌ Nunca |
+
+</details>
+
+---
+
+## 🚀 Probarlo en 2 pasos
+
+```bash
+# 1️⃣ Entrá a la carpeta de la versión actual
+cd "FASE 2/Evidencias Proyecto/CorePulse_REBUILD_146"
+
+# 2️⃣ Doble clic o desde la terminal
+Iniciar_CorePulse.bat
+```
+
+> ☕ La primera vez tarda un poco: prepara su propio entorno de Python e instala lo que necesita.
+> Requisitos: **Windows 10/11 de 64 bits** y **Python 3.12+**.
+> El encabezado de la app debe decir **Rebuild 146**. Los informes se guardan en `%LOCALAPPDATA%\CorePulse\reportes`.
+
+---
+
+## 🛠️ Guía técnica
+
+> 🧭 Para quien va a meter mano al código. Si solo querés usar la app, con lo de arriba alcanza.
+
+<p>
+  <img src="https://img.shields.io/badge/Python-~21.100_l%C3%ADneas-3776AB?logo=python&logoColor=white">
+  <img src="https://img.shields.io/badge/QML-~8.700_l%C3%ADneas-41CD52?logo=qt&logoColor=white">
+  <img src="https://img.shields.io/badge/pruebas_Python-350-brightgreen?logo=pytest&logoColor=white">
+  <img src="https://img.shields.io/badge/pruebas_Worker-61-brightgreen?logo=nodedotjs&logoColor=white">
+  <img src="https://img.shields.io/badge/historial-136_versiones_REBUILD-orange">
+</p>
+
+### 🗺️ El mapa del tesoro (arquitectura)
 
 ```mermaid
 flowchart LR
-    UI["🎨 ui/*.qml"] --> C["🎛️ main.py<br/>controladores Qt"]
+    UI["🎨 ui/*.qml<br/>24 componentes"] --> C["🎛️ main.py<br/>controladores Qt"]
     C --> CORE["🧠 core/<br/>monitoring · health · maintenance<br/>tweaks · benchmark · ai · cuenta"]
-    CORE --> WIN["🪟 Windows<br/>psutil · HardwareMonitor · PowerShell/CIM<br/>Overlay propio · ETW · DirectX · powercfg"]
+    CORE --> WIN["🪟 Windows<br/>psutil · HardwareMonitor · PowerShell/CIM<br/>RTSS · DirectX 11 · powercfg"]
     CORE --> DB[("💾 %LOCALAPPDATA%\\CorePulse<br/>SQLite · JSON/JSONL · DPAPI")]
     CORE -- "🔐 solo con permiso" --> AI["☁️ ai.corepulse.cl<br/>Cloudflare Worker"]
     AI --> KB["📚 knowledge.mjs<br/>RAG curado"]
     AI --> LLM["🤖 GPT-OSS 120B<br/>vía Groq"]
 ```
 
-**Separación de responsabilidades:** la interfaz nunca habla con Windows directo. Todo pasa por `core/`,
-y lo pesado (WMI, sensores, NVIDIA-SMI) corre en hilos o procesos aparte para mantener la interfaz disponible.
+**Tres capas, una regla:** la interfaz nunca habla con Windows directo. Todo pasa por `core/`,
+y lo pesado (WMI, sensores, NVIDIA-SMI) corre en hilos o procesos aparte para que la UI no se congele 🧊.
 
 <details>
-<summary>📂 <b>¿Qué hay en cada carpeta?</b> (dentro de <code>FASE 2/Evidencias Proyecto/CorePulse_REBUILD_177/</code>)</summary>
+<summary>📂 <b>¿Qué hay en cada carpeta?</b> (dentro de <code>FASE 2/Evidencias Proyecto/CorePulse_REBUILD_146/</code>)</summary>
 
 <br>
 
@@ -105,7 +139,7 @@ y lo pesado (WMI, sensores, NVIDIA-SMI) corre en hilos o procesos aparte para ma
 | `ui/` | Pantallas QML. `GlassPanel.qml` es el material Liquid Glass 🫧 que usan todas las tarjetas |
 | `core/monitoring/` | Telemetría en vivo (CPU, GPU multivendedor, RAM, disco) |
 | `core/health/` | Salud, diagnóstico, PDF, FPS, Game Boost, tendencias, almacenamiento |
-| `core/maintenance/` | Limpieza, red, inicio de Windows, Speedtest y test de audio |
+| `core/maintenance/` | Limpieza, red, drivers, inicio de Windows, Speedtest, test de audio |
 | `core/tweaks/` | Motor de tweaks reversibles 🔄 |
 | `core/ai.py` | Cliente de CorePulse AI Cloud |
 | `core/benchmark_gpu.py` | El benchmark DirectX 11 de la ciudad de neón 🏙️ |
@@ -132,7 +166,7 @@ Todo vive en `%LOCALAPPDATA%\CorePulse`:
 ### 🏃 Ejecutar y probar
 
 ```bash
-cd "FASE 2/Evidencias Proyecto/CorePulse_REBUILD_177"
+cd "FASE 2/Evidencias Proyecto/CorePulse_REBUILD_146"
 
 # ▶️ Arrancar (prepara el entorno aislado la primera vez)
 Iniciar_CorePulse.bat
@@ -141,17 +175,13 @@ Iniciar_CorePulse.bat
 python -B -m pytest -p no:cacheprovider -q tests
 ```
 
-**Validación del 03/11/2026:** 105 pruebas enfocadas Python y 61 de Node aprobadas.
-La suite histórica tiene 286 aprobadas y las mismas 63 fallas de la 176; no se
-declara completamente aprobada. Overlay y Sesiones abren sin avisos QML.
-
 **Dependencias** (se instalan solas): `PySide6` · `psutil` · `pythonnet` · `HardwareMonitor`
 
 ---
 
 ## ☁️ CorePulse AI Cloud
 
-El servidor de la IA vive en `FASE 2/Evidencias Proyecto/CorePulse_REBUILD_177/cloud/corepulse-ai/`: un **Cloudflare Worker** (`corepulse-ai-cloud`) publicado en **`https://ai.corepulse.cl`**. La app lo usa por defecto: el usuario no configura URL ni claves.
+El servidor de la IA vive en `FASE 2/Evidencias Proyecto/CorePulse_REBUILD_146/cloud/corepulse-ai/`: un **Cloudflare Worker** (`corepulse-ai-cloud`) publicado en **`https://ai.corepulse.cl`**. La app lo usa por defecto: el usuario no configura URL ni claves.
 
 | Pieza | Detalle |
 |---|---|
@@ -185,7 +215,7 @@ El servidor de la IA vive en `FASE 2/Evidencias Proyecto/CorePulse_REBUILD_177/c
 Desde PowerShell, con Node.js 22+:
 
 ```powershell
-cd "FASE 2\Evidencias Proyecto\CorePulse_REBUILD_177\cloud\corepulse-ai"
+cd "FASE 2\Evidencias Proyecto\CorePulse_REBUILD_146\cloud\corepulse-ai"
 npm.cmd install          # 📦 dependencias (Wrangler 4.151.1 fijado)
 npm.cmd run verify       # ✅ sintaxis + 61 pruebas (simuladas, no gastan tokens)
 npm.cmd audit            # 🔍 revisar antes de publicar; nunca "npm audit fix --force" a ciegas
@@ -196,12 +226,83 @@ npx.cmd wrangler deploy  # 🚀 publicar en ai.corepulse.cl
 > ⚠️ **No** volver a ejecutar `wrangler secret put`, **no** crear otro Worker, dominio ni Durable Object, y **nunca** subir tokens, claves ni `.dev.vars`.
 > El deploy está completo solo cuando muestra `Deployed` junto a `ai.corepulse.cl` y un `Current Version ID`. `/v1/health` no prueba el modelo: la validación real es una pregunta autenticada desde la app.
 
-</details>
+---
 
-<a id="web"></a>
+## 🧭 Cómo se trabaja en el proyecto
 
-<details>
-<summary><b>Documentación de la web</b> · Supabase, cuentas, contenido y despliegue</summary>
+### 📜 Reglas para crear una versión nueva
+
+```text
+📖  Leer completos "Reglas para crear Versiones nuevas.txt" y versiones/HISTORIAL.md
+✍️  Agregar la entrada ARRIBA del historial: base · cambios · validación · reversión
+🧹  Quitar el código que quedó obsoleto; no llenar el proyecto de .py nuevos
+🧪  Correr las pruebas: ninguna versión debería sumar fallos nuevos
+📦  Guardar el ZIP de respaldo de la versión anterior (con el TXT de reglas adentro)
+```
+
+### 🌳 Trabajo con Git
+
+| ✅ Sí | ❌ No |
+|---|---|
+| `git pull` antes de subir | `git push --force` sobre `main` 💥 |
+| Una rama por integrante (`maxi/corepulse-dev`, ...) | Subir tokens, claves o `.env` |
+| Mensajes de commit claros | Subir `__pycache__` o entornos virtuales |
+
+---
+
+## 👥 El equipo
+
+<table align="center">
+  <tr>
+    <td align="center" width="200">
+      <a href="https://github.com/tomashoytbarri24"><img src="https://github.com/tomashoytbarri24.png" width="90" style="border-radius:50%"><br><b>Tomás Hoyt</b></a><br>
+      🏗️ Arquitectura · 📡 Telemetría · 🤖 IA
+    </td>
+    <td align="center" width="200">
+      <a href="https://github.com/agtttttttttttt"><img src="https://github.com/agtttttttttttt.png" width="90" style="border-radius:50%"><br><b>Agustín Valdés</b></a><br>
+      🌐 Desarrollo web · ✅ Validación · 📝 Documentación
+    </td>
+    <td align="center" width="200">
+      <a href="https://github.com/maxicpa"><img src="https://github.com/maxicpa.png" width="90" style="border-radius:50%"><br><b>Maximiliano Carrasco</b></a><br>
+      🎨 Interfaz · 🏙️ Benchmark · 🧪 Pruebas
+    </td>
+  </tr>
+</table>
+
+<p align="center">
+  🎓 Proyecto <b>Capstone (PTY4614)</b> · Ingeniería en Informática · <b>Duoc UC</b> Valparaíso · Equipo 14
+</p>
+
+<p align="center">🧡 Hecho con mucho café por el equipo 14 · Duoc UC</p>
+
+<p align="center">
+  <img src="https://capsule-render.vercel.app/api?type=waving&color=0:00d4ff,50:1f6feb,100:0f2027&height=110&section=footer" alt="">
+</p>
+
+<br>
+
+<!-- ===================== README DE LA WEB ===================== -->
+<p align="center">
+  <img src="https://capsule-render.vercel.app/api?type=rect&color=0:38bdf8,100:3ecf8e&height=110&section=header&text=README%20de%20la%20web&fontSize=44&fontColor=0b1220&fontAlignY=55" alt="README de la web">
+</p>
+
+<div align="center">
+
+<img src="FASE%202/Evidencias%20Proyecto/CorePulse-web/docs/intro.gif" alt="Un notebook en 3D: la cámara se acerca a la pantalla y entra en la web de CorePulse" width="720">
+
+# 🌐 CorePulse Web
+
+**La web de CorePulse: precios, descargas, novedades y cuentas de usuario.**
+
+[corepulse.cl](https://corepulse.cl) · [Funciones](https://corepulse.cl/funciones) · [Precios](https://corepulse.cl/precios) · [Descargar](https://corepulse.cl/descargar)
+
+![Next.js 16](https://img.shields.io/badge/Next.js-16-000?logo=nextdotjs)
+![React 19](https://img.shields.io/badge/React-19-149eca?logo=react&logoColor=white)
+![Tailwind 4](https://img.shields.io/badge/Tailwind-4-38bdf8?logo=tailwindcss&logoColor=white)
+![Supabase](https://img.shields.io/badge/Supabase-DB%20%C2%B7%20Auth%20%C2%B7%20Storage-3ecf8e?logo=supabase&logoColor=white)
+![Cloudflare Workers](https://img.shields.io/badge/Cloudflare-Workers-f38020?logo=cloudflare&logoColor=white)
+
+</div>
 
 > 📁 El código de la web está en [`FASE 2/Evidencias Proyecto/CorePulse-web/`](FASE%202/Evidencias%20Proyecto/CorePulse-web). Todas las rutas y comandos de esta parte son relativos a esa carpeta.
 
@@ -397,51 +498,3 @@ npm run actualizar-capturas  # cambia capturas: prepara, sube y actualiza las ta
 ```
 
 </details>
-
-</details>
-
-<details>
-<summary><b>Versiones y trabajo en equipo</b> · reglas del proyecto y Git</summary>
-
-### Cómo se trabaja en el proyecto
-
-### 📜 Reglas para crear una versión nueva
-
-```text
-📖  Leer completos "Reglas para crear Versiones nuevas.txt" y versiones/HISTORIAL.md
-✍️  Agregar la entrada ARRIBA del historial: base · cambios · validación · reversión
-🧹  Quitar el código que quedó obsoleto; no llenar el proyecto de .py nuevos
-🧪  Correr las pruebas: ninguna versión debería sumar fallos nuevos
-📦  Guardar el ZIP de respaldo de la versión anterior (con el TXT de reglas adentro)
-```
-
-### 🌳 Trabajo con Git
-
-| ✅ Sí | ❌ No |
-|---|---|
-| `git pull` antes de subir | `git push --force` sobre `main` 💥 |
-| Una rama por integrante (`maxi/corepulse-dev`, ...) | Subir tokens, claves o `.env` |
-| Mensajes de commit claros | Subir `__pycache__` o entornos virtuales |
-
-</details>
-
-## Equipo
-
-<table>
-  <tr>
-    <td align="center" width="250">
-      <a href="https://github.com/tomashoytbarri24"><img src="https://github.com/tomashoytbarri24.png" width="64" height="64" alt="Tomás Hoyt"><br><b>Tomás Hoyt</b></a><br>
-      Arquitectura · Telemetría · IA
-    </td>
-    <td align="center" width="250">
-      <a href="https://github.com/agtttttttttttt"><img src="https://github.com/agtttttttttttt.png" width="64" height="64" alt="Agustín Valdés"><br><b>Agustín Valdés</b></a><br>
-      Web · Validación · Documentación
-    </td>
-    <td align="center" width="250">
-      <a href="https://github.com/maxicpa"><img src="https://github.com/maxicpa.png" width="64" height="64" alt="Maximiliano Carrasco"><br><b>Maximiliano Carrasco</b></a><br>
-      Interfaz · Benchmark · Pruebas
-    </td>
-  </tr>
-</table>
-
-Proyecto **Capstone · PTY4614** — Ingeniería en Informática, **Duoc UC Valparaíso**.
