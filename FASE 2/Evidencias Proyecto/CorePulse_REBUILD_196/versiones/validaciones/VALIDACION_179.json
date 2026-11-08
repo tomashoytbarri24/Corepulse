@@ -1,0 +1,170 @@
+{
+  "version": "179",
+  "baseVersion": "178",
+  "reviewedOn": "2026-11-05",
+  "focused": {
+    "passed": 112,
+    "failed": 0,
+    "byFile": {
+      "test_health_reports": 7,
+      "test_runtime": 14,
+      "test_sensor_startup": 10,
+      "test_overlay_activation": 30,
+      "test_game_sessions": 7,
+      "test_game_capture": 10,
+      "test_cloud_ai": 34
+    }
+  },
+  "ui": {
+    "cases": 24,
+    "warnings": [],
+    "data": "Synthetic fixtures, including second disk selection",
+    "storageLayout": {
+      "viewportWidths": [1120, 760],
+      "selectionSwitches": "C to D to C; long model name and unavailable SMART",
+      "geometryStable": true,
+      "equalUnitCardWidths": true,
+      "roundingTolerancePixels": 1,
+      "modelFontPixels": 16
+    }
+  },
+  "pdf": {
+    "cases": [
+      {
+        "case": "equipo",
+        "pages": 2
+      },
+      {
+        "case": "diagnostico",
+        "pages": 1
+      },
+      {
+        "case": "benchmark",
+        "pages": 2
+      },
+      {
+        "case": "diagnostico-parcial",
+        "pages": 1
+      },
+      {
+        "case": "partida",
+        "pages": 1
+      },
+      {
+        "case": "registro",
+        "pages": 1
+      }
+    ],
+    "pagesVisuallyReviewed": 8,
+    "data": "Synthetic; all five exporters exercised"
+  },
+  "native": {
+    "compiler": "Zig 0.14.1",
+    "gameApis": [
+      "D3D9",
+      "D3D10",
+      "D3D11",
+      "D3D12",
+      "OpenGL"
+    ],
+    "architectures": [
+      "x86",
+      "x64"
+    ],
+    "compiledDlls": 10,
+    "hostViews": 4,
+    "d3d11PanelViews": 4,
+    "d3d11MouseActions": 20,
+    "osdViews": 2,
+    "viewportWidths": [
+      1920,
+      2560
+    ],
+    "commercialGamesTested": false
+  },
+  "sourceSmoke": {
+    "version": "179",
+    "qmlLoaded": true,
+    "administrator": false,
+    "page": "summary",
+    "qmlWarnings": [],
+    "frozen": false,
+    "sensorsPrepared": true,
+    "cpuTemperatureAvailable": false
+  },
+  "historical": {
+    "passed": 290,
+    "failed": 59,
+    "newFailures": [],
+    "inheritedFailures": [
+      "test_014_clicking_only_cpu_gpu_ram_icons_opens_real_component_page",
+      "test_016_missing_key_restores_absence_and_does_not_overwrite_original",
+      "test_016_never_writes_when_backup_fails_or_registry_incompatible",
+      "test_018_blocked_adjustment_never_writes",
+      "test_045_wiring_navigation_unique_and_inherited_engines_unchanged",
+      "test_048_audio_stereo_channels_and_pcm_header",
+      "test_050_game_card_no_invented_data_and_update_while_visible",
+      "test_055_theme_catalog_has_ten_distinct_complete_palettes",
+      "test_056_sidebar_collapsed_hover_is_animated_and_shows_tooltips",
+      "test_060_session_storage_never_plaintext_outside_windows",
+      "test_061_main_qml_still_loads_ai_page_and_labels_new_release",
+      "test_062_history_chart_smooth_and_honest",
+      "test_062_rules_and_new_version_are_present",
+      "test_064_settings_collapse_when_connected_but_user_can_reopen",
+      "test_065_agustin_chart_and_cloud_ai_coexist",
+      "test_068_native_panel_has_theme_and_mouse_controls",
+      "test_068_overlay_bindings_and_shared_memory_own_slot",
+      "test_082_action_buttons_colored_text_and_solid_only_for_apply_update",
+      "test_all_qml_components_exist",
+      "test_classic_cpu_temperature_selection_disallows_gpu_nvm_and_zero",
+      "test_classic_hardwaremonitor_cpu_route_is_brought_back_without_importing_legacy_tree",
+      "test_classic_monitor_uses_separate_process_and_does_not_install_driver",
+      "test_clock_reads_measured_cpu_sensor_before_windows_estimation",
+      "test_cpu_clock_does_not_use_windows_base_clock_as_live_frequency",
+      "test_cpu_temp_gpu_ram_and_disk_model_are_presented_without_undefined",
+      "test_history_044_qml_routes_without_duplicate_modules",
+      "test_minimal_tree_and_single_launcher",
+      "test_overlay_page_exists_and_uses_real_metrics",
+      "test_rebuild_008_direct_geometry_no_scaled_shape_and_sidebar_contract",
+      "test_rebuild_013_cpu_clock_label_has_no_unusual_prefix_but_keeps_estimate_honest",
+      "test_rebuild_026_deep_and_standby_actions",
+      "test_rebuild_028_hover_dialogs_and_verified_success",
+      "test_rebuild_029_progress_modal_is_real_and_success_is_result_gated",
+      "test_rebuild_029_ram_meter_updates_while_future_is_running_and_stops_on_result",
+      "test_rebuild_030_cleanup_compact_by_default_and_results_accessible",
+      "test_rebuild_032_scrollbars_are_custom_but_scrollable_and_reusable",
+      "test_rebuild_032_unmodified_windows_engines_and_coverage",
+      "test_rebuild_033_no_changes_to_ram_data_or_interaction",
+      "test_rebuild_033_ram_monitor_uses_corepulse_palette_not_sky_blue",
+      "test_rebuild_034_all_cleanup_dialogs_use_same_corepulse_card_skin",
+      "test_rebuild_035_launcher_executes_from_its_own_absolute_paths",
+      "test_rebuild_089_gpu_brand_logo_follows_monitored_adapter",
+      "test_rebuild_090_gpu_header_brand_badges",
+      "test_rebuild_092_chart_legend_displays_vendor_icons_without_changing_data",
+      "test_rebuild_097_card_surfaces_match_cleanup_and_overview",
+      "test_sidebar_logo_removed_and_navigation_moves_up_without_losing_drag",
+      "test_storage_data_does_not_claim_wear_percent_or_guess_smart",
+      "test_telemetry_sources_explain_comparability_without_changing_layout",
+      "test_themes_module_exists_and_shell_palette_is_switchable",
+      "test_v131_sidebar_reveals_exactly_the_window_gradient",
+      "test_v133_sidebar_divider_follows_current_theme_accent",
+      "test_v142_cards_are_globally_consolidated_and_controls_preserved",
+      "test_v145_diagnostic_main_cards_use_global_glass_without_nested_gray_plates",
+      "test_v154_pawnio_shared_entrypoint_and_shell_elevation",
+      "test_v155_popup_liquid_glass_is_app_level_and_dismissable",
+      "test_v156_glass_notice_uses_live_theme_and_not_solid_gray",
+      "test_v167_global_search_is_wired_into_sidebar_and_tweaks",
+      "test_v171_sizes_and_icons_match_host_across_resolutions",
+      "test_windows_cards_details_raised_and_repair_ui_present"
+    ]
+  },
+  "pending": [
+    "Commercial games and other graphics APIs visual testing",
+    "Physical USB insertion/removal",
+    "Other PC and DPI",
+    "Installer build and installation"
+  ],
+  "changesToRamCleanup": false,
+  "commitPerformed": false,
+  "pushPerformed": false
+}

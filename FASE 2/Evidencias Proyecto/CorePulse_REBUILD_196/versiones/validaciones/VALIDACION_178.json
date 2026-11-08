@@ -1,0 +1,258 @@
+{
+  "version": "178",
+  "baseVersion": "177",
+  "reviewedOn": "2026-11-05",
+  "delivery": "Source only; installer 178 not built",
+  "scope": [
+    "Health hub",
+    "Battery UI",
+    "Storage UI",
+    "Cleanup UI",
+    "Network and speed UI",
+    "Reports UI and PDF layout",
+    "Test matrix"
+  ],
+  "pythonFocused": {
+    "passed": 109,
+    "failed": 0,
+    "execution": "Separate pytest process per file (Qt lifecycle isolation)",
+    "files": {
+      "test_health_reports": {
+        "passed": 4,
+        "failed": 0,
+        "skipped": 0
+      },
+      "test_runtime": {
+        "passed": 14,
+        "failed": 0,
+        "skipped": 0
+      },
+      "test_sensor_startup": {
+        "passed": 10,
+        "failed": 0,
+        "skipped": 0
+      },
+      "test_overlay_activation": {
+        "passed": 30,
+        "failed": 0,
+        "skipped": 0
+      },
+      "test_game_sessions": {
+        "passed": 7,
+        "failed": 0,
+        "skipped": 0
+      },
+      "test_game_capture": {
+        "passed": 10,
+        "failed": 0,
+        "skipped": 0
+      },
+      "test_cloud_ai": {
+        "passed": 34,
+        "failed": 0,
+        "skipped": 0
+      }
+    }
+  },
+  "ui": {
+    "passed": 21,
+    "warnings": [],
+    "data": "Synthetic controller fixtures",
+    "cases": [
+      "health",
+      "battery",
+      "battery-details-toggle",
+      "storage",
+      "storage-details-toggle",
+      "cleanup",
+      "deep-clean-requires-confirmation",
+      "network",
+      "network-details-toggle",
+      "network-zero-and-unavailable",
+      "speed-consent-and-modal-input",
+      "reports",
+      "reports-details-toggle",
+      "diagnostic-pdf-separate",
+      "battery-unavailable-capacities",
+      "desktop-without-battery",
+      "usb-without-smart-and-inventory-change",
+      "storage-compact-tide",
+      "cleanup-compact-tide",
+      "network-compact-tide",
+      "reports-compact-tide"
+    ],
+    "windowSizes": [
+      "1120x800",
+      "760x680"
+    ]
+  },
+  "pdf": {
+    "cases": 3,
+    "renderedAndVisuallyReviewedPages": 4,
+    "fixtures": "Synthetic, never a hardware assessment",
+    "pageTextBoundsChecked": true,
+    "diagnosticIndependentOfBenchmark": true
+  },
+  "hardware": {
+    "kind": "Read-only Windows controller integration; this PC only",
+    "elapsedSeconds": 12.0,
+    "battery": {
+      "busy": false,
+      "hasBattery": true,
+      "chargeAvailable": true,
+      "healthAvailable": true
+    },
+    "storage": {
+      "busy": false,
+      "physicalBusy": false,
+      "volumes": 2,
+      "physicalDisks": 2,
+      "selectedHealthKnown": true
+    },
+    "network": {
+      "busy": false,
+      "adapters": 6,
+      "allSensitiveHidden": true,
+      "trafficAvailable": true
+    },
+    "didNotRun": [
+      "maintenance",
+      "speed test",
+      "driver or dependency installation",
+      "game injection"
+    ]
+  },
+  "sourceSmoke": {
+    "version": "178",
+    "qmlLoaded": true,
+    "administrator": false,
+    "page": "summary",
+    "qmlWarnings": [],
+    "frozen": false,
+    "sensorsPrepared": true,
+    "cpuTemperatureAvailable": false
+  },
+  "static": {
+    "qmlParsed": 6,
+    "pythonCompiled": 4,
+    "nativeAndBinUnchanged": 245,
+    "rulesSha256": "6f202b34120c33a98bf66a736d2db268bb455a37d3b2890eef5c3dcd67fc1feb"
+  },
+  "historical": {
+    "passed177": 290,
+    "failed177": 59,
+    "passed178": 290,
+    "failed178": 59,
+    "newFailures": [],
+    "inheritedFailures": [
+      "test_014_clicking_only_cpu_gpu_ram_icons_opens_real_component_page",
+      "test_016_missing_key_restores_absence_and_does_not_overwrite_original",
+      "test_016_never_writes_when_backup_fails_or_registry_incompatible",
+      "test_018_blocked_adjustment_never_writes",
+      "test_045_wiring_navigation_unique_and_inherited_engines_unchanged",
+      "test_048_audio_stereo_channels_and_pcm_header",
+      "test_050_game_card_no_invented_data_and_update_while_visible",
+      "test_055_theme_catalog_has_ten_distinct_complete_palettes",
+      "test_056_sidebar_collapsed_hover_is_animated_and_shows_tooltips",
+      "test_060_session_storage_never_plaintext_outside_windows",
+      "test_061_main_qml_still_loads_ai_page_and_labels_new_release",
+      "test_062_history_chart_smooth_and_honest",
+      "test_062_rules_and_new_version_are_present",
+      "test_064_settings_collapse_when_connected_but_user_can_reopen",
+      "test_065_agustin_chart_and_cloud_ai_coexist",
+      "test_068_native_panel_has_theme_and_mouse_controls",
+      "test_068_overlay_bindings_and_shared_memory_own_slot",
+      "test_082_action_buttons_colored_text_and_solid_only_for_apply_update",
+      "test_all_qml_components_exist",
+      "test_classic_cpu_temperature_selection_disallows_gpu_nvm_and_zero",
+      "test_classic_hardwaremonitor_cpu_route_is_brought_back_without_importing_legacy_tree",
+      "test_classic_monitor_uses_separate_process_and_does_not_install_driver",
+      "test_clock_reads_measured_cpu_sensor_before_windows_estimation",
+      "test_cpu_clock_does_not_use_windows_base_clock_as_live_frequency",
+      "test_cpu_temp_gpu_ram_and_disk_model_are_presented_without_undefined",
+      "test_history_044_qml_routes_without_duplicate_modules",
+      "test_minimal_tree_and_single_launcher",
+      "test_overlay_page_exists_and_uses_real_metrics",
+      "test_rebuild_008_direct_geometry_no_scaled_shape_and_sidebar_contract",
+      "test_rebuild_013_cpu_clock_label_has_no_unusual_prefix_but_keeps_estimate_honest",
+      "test_rebuild_026_deep_and_standby_actions",
+      "test_rebuild_028_hover_dialogs_and_verified_success",
+      "test_rebuild_029_progress_modal_is_real_and_success_is_result_gated",
+      "test_rebuild_029_ram_meter_updates_while_future_is_running_and_stops_on_result",
+      "test_rebuild_030_cleanup_compact_by_default_and_results_accessible",
+      "test_rebuild_032_scrollbars_are_custom_but_scrollable_and_reusable",
+      "test_rebuild_032_unmodified_windows_engines_and_coverage",
+      "test_rebuild_033_no_changes_to_ram_data_or_interaction",
+      "test_rebuild_033_ram_monitor_uses_corepulse_palette_not_sky_blue",
+      "test_rebuild_034_all_cleanup_dialogs_use_same_corepulse_card_skin",
+      "test_rebuild_035_launcher_executes_from_its_own_absolute_paths",
+      "test_rebuild_089_gpu_brand_logo_follows_monitored_adapter",
+      "test_rebuild_090_gpu_header_brand_badges",
+      "test_rebuild_092_chart_legend_displays_vendor_icons_without_changing_data",
+      "test_rebuild_097_card_surfaces_match_cleanup_and_overview",
+      "test_sidebar_logo_removed_and_navigation_moves_up_without_losing_drag",
+      "test_storage_data_does_not_claim_wear_percent_or_guess_smart",
+      "test_telemetry_sources_explain_comparability_without_changing_layout",
+      "test_themes_module_exists_and_shell_palette_is_switchable",
+      "test_v131_sidebar_reveals_exactly_the_window_gradient",
+      "test_v133_sidebar_divider_follows_current_theme_accent",
+      "test_v142_cards_are_globally_consolidated_and_controls_preserved",
+      "test_v145_diagnostic_main_cards_use_global_glass_without_nested_gray_plates",
+      "test_v154_pawnio_shared_entrypoint_and_shell_elevation",
+      "test_v155_popup_liquid_glass_is_app_level_and_dismissable",
+      "test_v156_glass_notice_uses_live_theme_and_not_solid_gray",
+      "test_v167_global_search_is_wired_into_sidebar_and_tweaks",
+      "test_v171_sizes_and_icons_match_host_across_resolutions",
+      "test_windows_cards_details_raised_and_repair_ui_present"
+    ]
+  },
+  "nativeSourcesAndBinariesChanged": false,
+  "engineBehaviorChanged": false,
+  "pending": [
+    "Physical USB hotplug",
+    "Actual speed transfers",
+    "Actual maintenance and repair",
+    "Other PC and DPI",
+    "Installer build and installation",
+    "Commercial game visual verification"
+  ],
+  "notes": [
+    "No commit or push performed.",
+    "Repository root README and team documents preserved.",
+    "Initial combined focused test run ended without summary; complete isolated runs are recorded.",
+    "Full historical suite is not green; no new failing identifiers relative to 177.",
+    "Native binary hash equality does not prove game compatibility."
+  ],
+  "comparison": {
+    "added": [
+      "release/.gitkeep",
+      "tests/test_health_reports.py",
+      "ui/DetailsSection.qml",
+      "versiones/VALIDACION_178.json",
+      "versiones/validaciones/MATRIZ_PRUEBAS_178.md",
+      "versiones/validaciones/SHA256_INSTALADOR_177.txt",
+      "versiones/validaciones/VALIDACION_177.json"
+    ],
+    "removed": [
+      "release/SHA256.txt",
+      "versiones/VALIDACION_177.json"
+    ],
+    "changed": [
+      "README.md",
+      "core/health/report.py",
+      "core/runtime.py",
+      "installer/CorePulse.iss",
+      "installer/README.md",
+      "installer/build_installer.ps1",
+      "installer/version_info.txt",
+      "tests/test_rebuild.py",
+      "ui/CleanupPage.qml",
+      "ui/HealthPage.qml",
+      "ui/Main.qml",
+      "ui/NetworkPage.qml",
+      "ui/ReportsPage.qml",
+      "versiones/HISTORIAL.md"
+    ],
+    "unchanged": 343
+  }
+}

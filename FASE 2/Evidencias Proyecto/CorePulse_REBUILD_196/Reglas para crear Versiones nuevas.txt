@@ -1,0 +1,13 @@
+
+
+
+- Si una versión quedó Obsoleta eliminar archivo de la versión del historial de cambios
+
+
+- Las cosas deben estar bien consolidadas y además trata de no generar tantos archivos.py, además para que evitemos fallos y cosas a la hora   
+  de construir trata de siempre leer las reglas y el historial de cambios.
+
+
+- Recuerda que las cosas que queden obsoletas o que ya no se van ocupar debes ir quitándolas, ya sea archivos o código
+
+- Regla obligatoria: antes de crear cualquier versión, archivo, componente, función, diseño o cambio de CorePulse, leer y respetar íntegramente este TXT y versiones/HISTORIAL.md. Si una propuesta contradice estas reglas, no implementarla sin resolver primero la contradicción. Incluir siempre este TXT en el ZIP completo.

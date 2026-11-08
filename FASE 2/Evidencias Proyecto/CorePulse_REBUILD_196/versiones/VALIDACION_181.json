@@ -1,0 +1,74 @@
+{
+  "version": "181",
+  "baseVersion": "180",
+  "reviewedOn": "2026-11-05",
+  "focused": {
+    "passed": 58,
+    "failed": 0,
+    "byFile": {
+      "test_game_capture": 20,
+      "test_overlay_activation": 30,
+      "test_game_sessions": 7,
+      "nvidia_csv_validation": 1
+    }
+  },
+  "ui": {
+    "cases": 28,
+    "warnings": [],
+    "manualRecordControlsRemoved": true
+  },
+  "native": {
+    "compiler": "Zig 0.14.1",
+    "apis": [
+      "D3D9",
+      "D3D10",
+      "D3D11",
+      "D3D12",
+      "OpenGL"
+    ],
+    "architectures": [
+      "x86",
+      "x64"
+    ],
+    "compiledDlls": 10,
+    "hostViews": 4,
+    "d3d11Views": 4,
+    "d3d11MouseActions": 16,
+    "assertionsEnabled": true,
+    "viewportWidths": [
+      1920,
+      2560
+    ],
+    "commercialGamesTested": false
+  },
+  "sourceSmoke": {
+    "version": "181",
+    "qmlLoaded": true,
+    "administrator": false,
+    "page": "overlay",
+    "qmlWarnings": [],
+    "frozen": false,
+    "sensorsPrepared": true,
+    "cpuTemperatureAvailable": false
+  },
+  "gpuAudit": {
+    "readOnly": true,
+    "corePulseLoad": 23,
+    "nvidiaSmiLoad": 41,
+    "measurementsNotSimultaneous": true,
+    "readerNotStuckAtZero": true,
+    "telemetrySourceChanged": false,
+    "missingReadingRemainsNA": true
+  },
+  "automaticDetectionChanged": false,
+  "legacyRecordsPreserved": true,
+  "ramCleanupChanged": false,
+  "historicalRerun": false,
+  "installerBuilt": false,
+  "commitPerformed": false,
+  "pushPerformed": false,
+  "pending": [
+    "Commercial-game check of updated native modules",
+    "Other PC and DPI"
+  ]
+}
