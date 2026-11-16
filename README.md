@@ -57,7 +57,7 @@ Uno para temperaturas, otro para el disco, otro para los FPS, otro para limpiar.
 - Compatibilidad con Windows en español: las respuestas de la consola se leen con la página de códigos del sistema.
 - Instalador para Windows con PyInstaller e Inno Setup.
 
-El detalle de cada versión está en [`versiones/HISTORIAL.md`](FASE%202/Evidencias%20Proyecto/CorePulse_REBUILD_210/versiones/HISTORIAL.md) 📜
+El detalle de cada versión está en [`versiones/HISTORIAL.md`](FASE%202/Evidencias%20Proyecto/Evidencias%20de%20sistema/Aplicaci%C3%B3n/CorePulse_REBUILD_210/versiones/HISTORIAL.md) 📜
 
 ---
 
@@ -146,8 +146,30 @@ Las prioridades del producto se acuerdan entre los tres integrantes (dueño del 
 |---|---|
 | Planificación inicial y Sprint Backlog | `FASE 1/Evidencias Grupales/1.5_GuiaEstudiante_Fase1_CorePulse.docx` |
 | Product Backlog y avance del proyecto | `FASE 2/Evidencias Grupales/2.4_Informe_Avance_Fase2_CorePulse.docx` |
-| Registro de versiones (incrementos) | `FASE 2/Evidencias Proyecto/CorePulse_REBUILD_210/versiones/HISTORIAL.md` |
-| Pruebas automatizadas | `FASE 2/Evidencias Proyecto/CorePulse_REBUILD_210/tests/` |
+| Registro de versiones (incrementos) | `FASE 2/Evidencias Proyecto/Evidencias de sistema/Aplicación/CorePulse_REBUILD_210/versiones/HISTORIAL.md` |
+| Pruebas automatizadas | `FASE 2/Evidencias Proyecto/Evidencias de sistema/Aplicación/CorePulse_REBUILD_210/tests/` |
+| Documentación del proyecto (inicio, visión, áreas y retrospectivas) | `FASE 2/Evidencias Proyecto/Evidencias de documentación/` |
+| Código, base de datos y ejecución local | `FASE 2/Evidencias Proyecto/Evidencias de sistema/` |
+
+---
+
+## Estructura del repositorio y ejecución local
+
+| Carpeta | Contenido |
+|---|---|
+| `FASE 1/` | Evidencias de la Fase 1 (grupales e individuales) |
+| `FASE 2/Evidencias Grupales/` | Informe de avance (2.4) e informe final (2.6) |
+| `FASE 2/Evidencias Individuales/` | Diarios de reflexión y autoevaluaciones de cada integrante |
+| `FASE 2/Evidencias Proyecto/Presentación Proyecto/` | Presentación del proyecto |
+| `FASE 2/Evidencias Proyecto/Evidencias de documentación/` | Documento de inicio, Product Vision, división de áreas y retrospectivas |
+| `FASE 2/Evidencias Proyecto/Evidencias de sistema/Aplicación/` | Código fuente: aplicación de escritorio (`CorePulse_REBUILD_210`) y sitio web (`CorePulse-web`) |
+| `FASE 2/Evidencias Proyecto/Evidencias de sistema/Base de datos/` | Scripts SQL, modelo de datos y diagramas entidad-relación |
+| `FASE 3/` | Evidencias de la Fase 3 |
+
+**Cómo ejecutar el sistema en local:** las instrucciones completas están en [`FASE 2/Evidencias Proyecto/Evidencias de sistema/README.md`](FASE%202/Evidencias%20Proyecto/Evidencias%20de%20sistema/README.md).
+
+- **Sitio web y base de datos:** con Docker, desde `FASE 2/Evidencias Proyecto/Evidencias de sistema`, ejecutar `docker compose up -d --build`. El sitio queda en http://localhost:3000 y la base de datos PostgreSQL en el puerto 5432, con las 13 tablas y sus datos iniciales.
+- **Aplicación de escritorio:** en Windows, con `Iniciar_CorePulse.bat` (pasos abajo). No se ejecuta en Docker porque es una aplicación de Windows con interfaz gráfica que lee los sensores del equipo.
 
 ---
 
@@ -155,7 +177,7 @@ Las prioridades del producto se acuerdan entre los tres integrantes (dueño del 
 
 ```bash
 # 1️⃣ Entrá a la carpeta de la versión actual
-cd "FASE 2/Evidencias Proyecto/CorePulse_REBUILD_210"
+cd "FASE 2/Evidencias Proyecto/Evidencias de sistema/Aplicación/CorePulse_REBUILD_210"
 
 # 2️⃣ Doble clic o desde la terminal
 Iniciar_CorePulse.bat
@@ -196,7 +218,7 @@ flowchart LR
 y lo pesado (WMI, sensores, NVIDIA-SMI) corre en hilos o procesos aparte para que la UI no se congele 🧊.
 
 <details>
-<summary>📂 <b>¿Qué hay en cada carpeta?</b> (dentro de <code>FASE 2/Evidencias Proyecto/CorePulse_REBUILD_210/</code>)</summary>
+<summary>📂 <b>¿Qué hay en cada carpeta?</b> (dentro de <code>FASE 2/Evidencias Proyecto/Evidencias de sistema/Aplicación/CorePulse_REBUILD_210/</code>)</summary>
 
 <br>
 
@@ -232,7 +254,7 @@ Todo vive en `%LOCALAPPDATA%\CorePulse`:
 ### 🏃 Ejecutar y probar
 
 ```bash
-cd "FASE 2/Evidencias Proyecto/CorePulse_REBUILD_210"
+cd "FASE 2/Evidencias Proyecto/Evidencias de sistema/Aplicación/CorePulse_REBUILD_210"
 
 # ▶️ Arrancar (prepara el entorno aislado la primera vez)
 Iniciar_CorePulse.bat
@@ -247,7 +269,7 @@ python -B -m pytest -p no:cacheprovider -q tests
 
 ## ☁️ CorePulse AI Cloud
 
-El servidor de la IA vive en `FASE 2/Evidencias Proyecto/CorePulse_REBUILD_210/cloud/corepulse-ai/`: un **Cloudflare Worker** (`corepulse-ai-cloud`) publicado en **`https://ai.corepulse.cl`**. La app lo usa por defecto: el usuario no configura URL ni claves.
+El servidor de la IA vive en `FASE 2/Evidencias Proyecto/Evidencias de sistema/Aplicación/CorePulse_REBUILD_210/cloud/corepulse-ai/`: un **Cloudflare Worker** (`corepulse-ai-cloud`) publicado en **`https://ai.corepulse.cl`**. La app lo usa por defecto: el usuario no configura URL ni claves.
 
 | Pieza | Detalle |
 |---|---|
@@ -281,7 +303,7 @@ El servidor de la IA vive en `FASE 2/Evidencias Proyecto/CorePulse_REBUILD_210/c
 Desde PowerShell, con Node.js 22+:
 
 ```powershell
-cd "FASE 2\Evidencias Proyecto\CorePulse_REBUILD_210\cloud\corepulse-ai"
+cd "FASE 2\Evidencias Proyecto\Evidencias de sistema\Aplicación\CorePulse_REBUILD_210\cloud\corepulse-ai"
 npm.cmd install          # 📦 dependencias (Wrangler 4.151.1 fijado)
 npm.cmd run verify       # ✅ sintaxis + 61 pruebas (simuladas, no gastan tokens)
 npm.cmd audit            # 🔍 revisar antes de publicar; nunca "npm audit fix --force" a ciegas
@@ -354,7 +376,7 @@ npx.cmd wrangler deploy  # 🚀 publicar en ai.corepulse.cl
 
 <div align="center">
 
-<img src="FASE%202/Evidencias%20Proyecto/CorePulse-web/docs/intro.gif" alt="Un notebook en 3D: la cámara se acerca a la pantalla y entra en la web de CorePulse" width="720">
+<img src="FASE%202/Evidencias%20Proyecto/Evidencias%20de%20sistema/Aplicaci%C3%B3n/CorePulse-web/docs/intro.gif" alt="Un notebook en 3D: la cámara se acerca a la pantalla y entra en la web de CorePulse" width="720">
 
 # 🌐 CorePulse Web
 
@@ -370,7 +392,7 @@ npx.cmd wrangler deploy  # 🚀 publicar en ai.corepulse.cl
 
 </div>
 
-> 📁 El código de la web está en [`FASE 2/Evidencias Proyecto/CorePulse-web/`](FASE%202/Evidencias%20Proyecto/CorePulse-web). Todas las rutas y comandos de esta parte son relativos a esa carpeta.
+> 📁 El código de la web está en [`FASE 2/Evidencias Proyecto/Evidencias de sistema/Aplicación/CorePulse-web/`](FASE%202/Evidencias%20Proyecto/Evidencias%20de%20sistema/Aplicaci%C3%B3n/CorePulse-web). Todas las rutas y comandos de esta parte son relativos a esa carpeta.
 
 **Todo el contenido sale de Supabase**: textos, precios, planes, funciones, novedades, preguntas, legales e imágenes. En el código solo quedan etiquetas de interfaz (botones, menús). ¿Quieres cambiar un precio? Se edita una fila en Supabase y no hace falta tocar el código.
 
@@ -439,7 +461,7 @@ sequenceDiagram
 <details>
 <summary><b>2. Cloudflare Workers</b> · hosting en corepulse.cl</summary>
 
-1. **Workers & Pages → Create → Import a repository** → elige el repositorio (Workers Builds) e indica como *Root directory* la carpeta `FASE 2/Evidencias Proyecto/CorePulse-web`. Usa la configuración por defecto: `npm run build` compila con OpenNext y `wrangler.jsonc` define el Worker y los dominios `corepulse.cl` y `www.corepulse.cl`.
+1. **Workers & Pages → Create → Import a repository** → elige el repositorio (Workers Builds) e indica como *Root directory* la carpeta `FASE 2/Evidencias Proyecto/Evidencias de sistema/Aplicación/CorePulse-web`. Usa la configuración por defecto: `npm run build` compila con OpenNext y `wrangler.jsonc` define el Worker y los dominios `corepulse.cl` y `www.corepulse.cl`.
 2. Las variables públicas de compilación (`NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`, `NEXT_PUBLIC_SITE_URL`) están en `.env.production`. Si prefieres definirlas en Cloudflare, ponlas en **Settings → Build → Variables** y en **Settings → Variables and Secrets**.
 3. Cada `git push` a la rama configurada en Workers Builds vuelve a publicar. A mano: `npm run deploy`.
 
@@ -498,7 +520,7 @@ Cuando publicas un **Release** en el repositorio del programa, una GitHub Action
 3. En el repositorio **del programa**, **Settings → Secrets and variables → Actions → New repository secret**:
    - `SUPABASE_URL`: la URL del proyecto (`https://….supabase.co`).
    - `SUPABASE_NOVEDADES_KEY`: la clave del paso 2.
-4. Copia [`docs/github/novedades-web.yml`](FASE%202/Evidencias%20Proyecto/CorePulse-web/docs/github/novedades-web.yml) a `.github/workflows/novedades-web.yml` del programa y haz commit.
+4. Copia [`docs/github/novedades-web.yml`](FASE%202/Evidencias%20Proyecto/Evidencias%20de%20sistema/Aplicaci%C3%B3n/CorePulse-web/docs/github/novedades-web.yml) a `.github/workflows/novedades-web.yml` del programa y haz commit.
 
 | En GitHub | En la web |
 |---|---|
@@ -553,7 +575,7 @@ En la base solo hay huellas SHA-256 de códigos y tokens (tablas `codigos_app` y
 <summary><b>Ver todos</b></summary>
 
 ```bash
-cd "FASE 2/Evidencias Proyecto/CorePulse-web"
+cd "FASE 2/Evidencias Proyecto/Evidencias de sistema/Aplicación/CorePulse-web"
 npm run dev             # desarrollo en http://localhost:3000 (necesita .env.local)
 npm run build           # compilación de producción (OpenNext para Cloudflare)
 npm run preview         # compila y prueba en local con el entorno de Workers

@@ -1,0 +1,10 @@
+# Archivos que no se copian a la imagen de Docker.
+node_modules
+.next
+.open-next
+.wrangler
+.dev.vars
+.env.local
+contenido/capturas-nuevas
+Dockerfile
+.dockerignore

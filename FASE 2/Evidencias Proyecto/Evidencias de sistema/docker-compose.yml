@@ -1,0 +1,46 @@
+# CorePulse · Levanta el sistema web en local.
+#
+#   base-datos → PostgreSQL 16 con el modelo de datos web (13 tablas y datos iniciales)
+#   web        → sitio CorePulse (Next.js) en http://localhost:3000
+#
+# Uso (desde esta carpeta):
+#   1. Copiar .env.example como .env (opcional: sin .env se usan los valores por defecto).
+#   2. docker compose up -d --build
+#
+# La aplicación de escritorio NO se ejecuta en Docker: es una aplicación de Windows con
+# interfaz gráfica que lee los sensores del equipo. Ver README.md de esta carpeta.
+
+services:
+  base-datos:
+    image: postgres:16
+    container_name: corepulse-base-datos
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-corepulse}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-corepulse_local}
+      POSTGRES_DB: ${POSTGRES_DB:-corepulse}
+    ports:
+      - "${POSTGRES_PUERTO:-5432}:5432"
+    volumes:
+      - "./Base de datos/supabase:/corepulse/supabase:ro"
+      - "./Base de datos/supabase/iniciar_base.sh:/docker-entrypoint-initdb.d/iniciar_base.sh:ro"
+      - corepulse-datos:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  web:
+    build:
+      context: "./Aplicación/CorePulse-web"
+      args:
+        NEXT_PUBLIC_SUPABASE_URL: ${NEXT_PUBLIC_SUPABASE_URL:-https://xxbcdxxiphcsuxewmqhf.supabase.co}
+        NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: ${NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY:-sb_publishable__ndtI6Ho-L1AAdA36SsSxQ_x5prkWGT}
+        NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL:-http://localhost:3000}
+    container_name: corepulse-web
+    ports:
+      - "${WEB_PUERTO:-3000}:3000"
+    restart: unless-stopped
+
+volumes:
+  corepulse-datos:
