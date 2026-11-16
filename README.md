@@ -86,6 +86,28 @@ El detalle de cada versión está en [`versiones/HISTORIAL.md`](FASE%202/Evidenc
 
 ---
 
+## Innovación
+
+**Qué problema resuelve.** Para saber por qué un PC con Windows anda lento o se calienta, un usuario normalmente combina cinco o más programas: uno para temperaturas, otro para el disco, otro para FPS, otro para limpiar y otro para ajustar Windows. Cada uno muestra los datos a su manera, algunos inventan valores cuando no tienen sensor y muchos cambian Windows sin forma de volver atrás.
+
+**Qué lo hace diferente de otras soluciones:**
+
+1. **Datos verificables (regla REAL_OR_NA).** Cada lectura indica su fuente. Si un dato no se puede obtener de una fuente válida, CorePulse muestra N/A en lugar de estimarlo. Herramientas como los optimizadores comerciales suelen mostrar valores aproximados sin decirlo.
+2. **Optimizaciones 100 % reversibles.** Antes de cambiar Windows, CorePulse guarda el valor original, verifica que el cambio quedó aplicado y permite restaurarlo con un clic. Si no puede guardar el respaldo, no toca Windows.
+3. **IA que no inventa.** CorePulse AI interpreta solo los datos que el usuario autoriza compartir, responde con fichas oficiales de Microsoft, Intel, AMD y NVIDIA, y las reglas propias deciden el diagnóstico; el modelo solo lo explica. Sin Internet, el diagnóstico local sigue funcionando.
+4. **Todo en una sola aplicación.** Telemetría, salud del equipo, reparación de Windows, limpieza, red, benchmark, overlay de FPS para juegos, sesiones de juego, informe PDF e IA, con un mismo estilo y en español.
+5. **Privacidad por defecto.** Los datos del equipo no salen de él, la IP y la red Wi-Fi se muestran ocultas, la contraseña nunca se guarda y el token de la cuenta queda cifrado por Windows.
+6. **Medición de FPS sin herramientas externas.** El overlay se dibuja dentro de CorePulse y mide los FPS con eventos de Windows (ETW), sin depender de RTSS y sin inyectar código en el juego por defecto.
+
+**Qué valor agrega a quienes lo usan:**
+
+- **Usuarios de PC y notebooks:** entienden el estado de su equipo en un solo lugar y en lenguaje simple.
+- **Jugadores:** miden FPS, temperaturas y rendimiento mientras juegan, y comparan sus partidas.
+- **Técnicos de soporte:** obtienen un diagnóstico trazable y un informe PDF para respaldar su trabajo.
+- **Todos:** pueden probar optimizaciones sin miedo a dañar Windows, porque cada cambio se puede deshacer.
+
+---
+
 ## Tecnologías
 
 Tecnologías usadas en el proyecto, con las versiones declaradas en `requirements.txt` y `package.json`:
@@ -101,7 +123,7 @@ Tecnologías usadas en el proyecto, con las versiones declaradas en `requirement
 | Sitio web | Next.js 16, React 19, TypeScript 5, Tailwind CSS 4, Motion 12 y Lenis 1.3 |
 | Base de datos web e infraestructura | Supabase (PostgreSQL con seguridad por fila), OpenNext para Cloudflare 1.20 y Wrangler 4 |
 | Instalador | PyInstaller e Inno Setup |
-| Pruebas | pytest (aplicación) y pruebas de Node.js (servidor de IA) |
+| Pruebas | pytest: unitarias, de integración, de rendimiento y de seguridad (aplicación); pruebas de Node.js (servidor de IA) |
 | Herramientas de trabajo | Git, GitHub y Visual Studio Code |
 
 ## Integrantes y roles
@@ -118,18 +140,27 @@ Las prioridades del producto se acuerdan entre los tres integrantes (dueño del 
 
 ## Metodología de trabajo
 
-**Metodología utilizada:** Scrum, adaptado a un equipo de tres integrantes y a las 18 semanas de la asignatura.
+**Metodología utilizada:** Scrum, adaptado a un equipo de tres integrantes y al calendario de la asignatura.
 
-**Por qué se eligió:** CorePulse depende de hardware muy variado y de lo que cada equipo Windows permite leer o modificar. Muchas decisiones solo podían tomarse después de probar en equipos reales, por lo que convenía trabajar por incrementos cortos, probar pronto y ajustar prioridades sin rehacer todo el plan.
+### Por qué se eligió Scrum
 
-**Cómo se aplicó:**
+1. **Requisitos que cambian con el hardware.** CorePulse depende de lo que cada equipo Windows permite leer o modificar: sensores que no existen, GPU de distintos fabricantes, permisos de administrador y bloqueos de Windows. Muchas decisiones solo se pudieron tomar después de probar en equipos reales. Un plan cerrado en cascada habría obligado a rehacer etapas completas; con sprints cortos el equipo probó pronto y ajustó las prioridades sin perder el control.
+2. **Entregas incrementales y reversibles.** Cada sprint termina en una versión que funciona y que se puede revertir. Eso calza con la forma en que se construye CorePulse: versiones numeradas (REBUILD) con historial y respaldo.
+3. **Equipo pequeño con áreas definidas.** Con tres integrantes, Scrum permite que cada uno avance en su área (sistema, juegos e interfaz, salud y validación) y que el equipo integre y revise en conjunto al cierre de cada sprint.
+4. **Mejora continua.** Las retrospectivas permitieron detectar problemas del proceso y corregirlos: por ejemplo, los conflictos de Git al integrar versiones llevaron a coordinar las ramas y a definir una versión de referencia.
+5. **Por qué no otras metodologías.** Cascada no servía porque el alcance técnico no se podía fijar al inicio. Kanban se descartó porque la asignatura evalúa por fases con entregas fijas, y Scrum entrega ese ritmo con sprints, revisiones y artefactos que dejan evidencia del avance.
 
-1. **Sprints semanales.** Cada sprint parte con la priorización del trabajo pendiente y termina con una revisión del equipo sobre lo integrado y lo que falta.
-2. **Product Backlog.** Las tareas se priorizan en alta, media o baja y se asignan a un responsable. El backlog está en el informe de avance de la Fase 2 (Anexo D).
-3. **Incrementos REBUILD.** Cada cambio se entrega como una versión numerada, completa y reversible. Cada versión queda registrada en `versiones/HISTORIAL.md` con su base, cambios, validación y forma de reversión. Al cierre de la Fase 2 hay 210 versiones registradas.
-4. **Definición de terminado.** Una versión está terminada cuando está registrada en el historial, se ejecuta sin errores, no agrega fallos nuevos a las pruebas automatizadas y existe un respaldo de la versión anterior.
-5. **Control de versiones con Git.** Desde la semana 13 el trabajo se publica en este repositorio, ordenado por fase y por tipo de evidencia. Las reglas de Git están en la sección "Cómo se trabaja en el proyecto".
-6. **Congelamiento del alcance.** Desde la semana 14 se priorizan validación, corrección de errores, compatibilidad, instalador y documentación por sobre funciones nuevas.
+### Cómo se aplicó
+
+| Práctica de Scrum | Cómo se aplicó en CorePulse | Evidencia |
+|---|---|---|
+| Roles | Tomás Hoyt (integración y arquitectura), Agustín Valdés (juegos, interfaz y web) y Maximiliano Carrasco (salud, mantenimiento y validación). Las prioridades del producto se acuerdan entre los tres. | Sección "Integrantes y roles" |
+| Product Backlog | Elementos priorizados en alta, media o baja, con responsable y estado. | `Evidencias de documentación/Product_Backlog.md` |
+| Sprints y Sprint Backlog | 7 sprints en la Fase 2; cada uno con objetivo, tareas, estado y un hito de desarrollo (una versión verificada). | `Evidencias de documentación/Sprints.md` |
+| Revisión y retrospectiva | Reunión por Discord al cierre de cada sprint: qué salió bien, qué salió mal y acuerdos de mejora. | `Evidencias de documentación/Retrospectivas.md` |
+| Definition of Done | Criterios para dar por terminado un elemento, una versión, un sprint y una entrega de fase. | `Evidencias de documentación/Definition_of_Done.md` |
+| Incremento | Cada cambio se entrega como una versión numerada, completa y reversible, registrada con su base, cambios, validación y forma de reversión. | `versiones/HISTORIAL.md` |
+| Control de versiones | El trabajo se publica en este repositorio, ordenado por fase y por tipo de evidencia. | Este repositorio |
 
 **Fases del proyecto:**
 
@@ -140,16 +171,24 @@ Las prioridades del producto se acuerdan entre los tres integrantes (dueño del 
 5. Pruebas y validación en equipos reales.
 6. Integración, instalador, sitio web y documentación.
 
-**Documentos de la metodología en el repositorio:**
+**Documentación del proyecto en el repositorio:**
 
 | Documento | Ubicación |
 |---|---|
-| Planificación inicial y Sprint Backlog | `FASE 1/Evidencias Grupales/1.5_GuiaEstudiante_Fase1_CorePulse.docx` |
-| Product Backlog y avance del proyecto | `FASE 2/Evidencias Grupales/2.4_Informe_Avance_Fase2_CorePulse.docx` |
+| Documento de inicio (problema, objetivos, stakeholders, alcance y restricciones) | `FASE 2/Evidencias Proyecto/Evidencias de documentación/Documento_Inicio_Proyecto.md` |
+| Product Vision | `FASE 2/Evidencias Proyecto/Evidencias de documentación/Product_Vision.md` |
+| Product Backlog | `FASE 2/Evidencias Proyecto/Evidencias de documentación/Product_Backlog.md` |
+| Sprint Backlog (7 sprints) | `FASE 2/Evidencias Proyecto/Evidencias de documentación/Sprints.md` |
+| Retrospectivas | `FASE 2/Evidencias Proyecto/Evidencias de documentación/Retrospectivas.md` |
+| Definition of Done | `FASE 2/Evidencias Proyecto/Evidencias de documentación/Definition_of_Done.md` |
+| Requisitos no funcionales | `FASE 2/Evidencias Proyecto/Evidencias de documentación/Requisitos_No_Funcionales.md` |
+| Diagramas UML | `FASE 2/Evidencias Proyecto/Evidencias de documentación/Diagramas_UML.md` |
+| Plan de pruebas (unitarias, integración, rendimiento y seguridad) | `FASE 2/Evidencias Proyecto/Evidencias de documentación/Plan_de_Pruebas.md` |
+| Manual técnico (instalación, configuración, compilación y despliegue) | `FASE 2/Evidencias Proyecto/Evidencias de documentación/Manual_Tecnico.md` |
+| Modelo de datos y diagramas entidad-relación | `FASE 2/Evidencias Proyecto/Evidencias de sistema/Base de datos/modelo_datos.md` |
 | Registro de versiones (incrementos) | `FASE 2/Evidencias Proyecto/Evidencias de sistema/Aplicación/CorePulse_REBUILD_210/versiones/HISTORIAL.md` |
 | Pruebas automatizadas | `FASE 2/Evidencias Proyecto/Evidencias de sistema/Aplicación/CorePulse_REBUILD_210/tests/` |
-| Documentación del proyecto (inicio, visión, áreas y retrospectivas) | `FASE 2/Evidencias Proyecto/Evidencias de documentación/` |
-| Código, base de datos y ejecución local | `FASE 2/Evidencias Proyecto/Evidencias de sistema/` |
+| Planificación inicial (Fase 1) | `FASE 1/Evidencias Grupales/1.5_GuiaEstudiante_Fase1_CorePulse.docx` |
 
 ---
 
@@ -196,7 +235,7 @@ Iniciar_CorePulse.bat
 <p>
   <img src="https://img.shields.io/badge/Python-~25.700_l%C3%ADneas-3776AB?logo=python&logoColor=white">
   <img src="https://img.shields.io/badge/QML-~11.100_l%C3%ADneas-41CD52?logo=qt&logoColor=white">
-  <img src="https://img.shields.io/badge/pruebas_Python-497-brightgreen?logo=pytest&logoColor=white">
+  <img src="https://img.shields.io/badge/pruebas_Python-517-brightgreen?logo=pytest&logoColor=white">
   <img src="https://img.shields.io/badge/pruebas_Worker-61-brightgreen?logo=nodedotjs&logoColor=white">
   <img src="https://img.shields.io/badge/historial-210_versiones_REBUILD-orange">
 </p>
@@ -246,7 +285,7 @@ Todo vive en `%LOCALAPPDATA%\CorePulse`:
 | `monitoring_history.sqlite3` → `samples` | 🗃️ SQLite | Muestras cada 30 s, retención de 90 días |
 | `monitoring_history.sqlite3` → `windows_sessions` | 🗃️ SQLite | Un registro por arranque de Windows |
 | `monitoring_history.sqlite3` → `alert_events` | 🗃️ SQLite | Historial de alertas con su fuente |
-| `windows_tweaks_state.json` | 📄 JSON | Cómo estaba Windows antes de cada tweak ↩️ |
+| `tweaks_originales.json` | 📄 JSON | Cómo estaba Windows antes de cada tweak ↩️ |
 | `benchmark_historial.jsonl` | 📄 JSONL | Hasta 500 sesiones de benchmark |
 | `cuenta.dat` | 🔒 DPAPI | Token de la cuenta, cifrado por Windows |
 | `reportes\` | 📄 PDF | Informes de diagnóstico y de benchmark |

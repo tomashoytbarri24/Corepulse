@@ -4,6 +4,8 @@
 - Se conservan todas las opciones: estilos, vista previa, atajos, posición, lecturas, detección de FPS, módulo de juego, permisos y diagnóstico.
 - El estado y el interruptor para activar/desactivar el overlay permanecen siempre visibles.
 - Se retiró la lectura térmica de RAM y sus sondas; Resumen y el panel rápido conservan uso y capacidad.
+- Corrección de arranque: `core/runtime.py` leía la preferencia «Abrir siempre con permisos» con `winreg.QueryEalueEx` (no existe) y CorePulse se cerraba al abrirse sin administrador. Ahora usa `winreg.QueryValueEx`.
+- Pruebas nuevas (16-11-2026): `tests/test_integracion.py` (5), `tests/test_rendimiento.py` (5) y `tests/test_seguridad.py` (10), sin modificar Windows (Registro simulado y archivos temporales). Las 20 se aprueban; la suite queda en 434 de 517.
 
 ---
 

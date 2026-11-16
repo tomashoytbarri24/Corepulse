@@ -4,7 +4,7 @@
 
 Integrantes: Tomás Hoyt, Maximiliano Carrasco y Agustín Valdés.
 
-Este documento reúne en un solo lugar lo definido en la Guía 1.5 y agrega los stakeholders, el alcance MVP y las restricciones, que la guía no detallaba. Debe revisarlo el equipo antes de entregarlo.
+Este documento reúne en un solo lugar lo definido en la Guía 1.5 y agrega los stakeholders, el alcance MVP y las restricciones, que la guía no detallaba.
 
 ## 1. Problema
 

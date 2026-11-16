@@ -1,4 +1,4 @@
-# Sprints de CorePulse · Fase 2
+# Sprints y Sprint Backlog de CorePulse · Fase 2
 
 Registro de los sprints de CorePulse desde la Fase 2. Cada sprint se identifica por el hito de desarrollo que lo cierra (fecha y versión). Al cierre de cada sprint, el equipo se reunió por Discord para revisar el avance y planificar el sprint siguiente. Las retrospectivas de cada sprint están en `Retrospectivas.md`.
 

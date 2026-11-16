@@ -76,7 +76,7 @@ def always_administrator():
     try:
         with winreg.OpenKey(winreg.HKEY_CURRENT_USER,
                             r'Software\CorePulse\CorePulseRebuild\overlay') as key:
-            return str(winreg.QueryEalueEx(key, 'alwaysAdmin')[0]).casefold() == 'true'
+            return str(winreg.QueryValueEx(key, 'alwaysAdmin')[0]).casefold() == 'true'
     except OSError:
         return False
 
