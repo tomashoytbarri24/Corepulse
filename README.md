@@ -12,7 +12,7 @@
   <img src="https://img.shields.io/badge/Python-3.12+-3776AB?style=for-the-badge&logo=python&logoColor=white">
   <img src="https://img.shields.io/badge/Qt-PySide6%20%2F%20QML-41CD52?style=for-the-badge&logo=qt&logoColor=white">
   <img src="https://img.shields.io/badge/Cloudflare-Workers-F38020?style=for-the-badge&logo=cloudflare&logoColor=white">
-  <img src="https://img.shields.io/badge/versi%C3%B3n-REBUILD%20146-8A2BE2?style=for-the-badge">
+  <img src="https://img.shields.io/badge/versi%C3%B3n-REBUILD%20210-8A2BE2?style=for-the-badge">
 </p>
 
 <p align="center">
@@ -43,20 +43,21 @@ Uno para temperaturas, otro para el disco, otro para los FPS, otro para limpiar.
 | 🤖 | **CorePulse AI** | Te explica el diagnóstico con **fuentes oficiales** (Microsoft, Intel, AMD, NVIDIA) y compara la salud de tu PC **entre arranques** |
 | ⚙️ | **Tweaks de Windows 11** | 78 optimizaciones que guardan **cómo estaba todo antes**: un clic y vuelve atrás ↩️ |
 | 🧹 | **Limpieza** | Temporales, caché, RAM, duplicados y Papelera, siempre con confirmación |
-| 🎮 | **Gaming** | Overlay con **FPS reales** (RTSS), Game Boost reversible y plan de energía automático por juego |
+| 🎮 | **Gaming** | Overlay propio dibujado con Qt, con **FPS reales** medidos por eventos de Windows (ETW/PresentMon), Game Boost reversible y plan de energía automático por juego |
 | 🏙️ | **Benchmark GPU** | Una ciudad de neón en **DirectX 11** que exprime tu tarjeta y guarda el historial para comparar |
 | 📈 | **Tendencias** | Tu uso agrupado por **sesión de Windows**, para ver si el problema se repite |
 | 🌐 | **Red avanzada** | Adaptadores, tráfico y Speedtest, con tu IP escondida detrás de un 👁️ |
 | 🎨 | **Temas** | 15 paletas con estilo **Liquid Glass** 🫧 |
 
-### 🆕 Novedades de la versión actual (REBUILD 146)
+### 🆕 Novedades de la versión actual (REBUILD 210)
 
-- Logotipo **AMD** completo, con el nombre de la marca y su flecha oficial.
-- Icono y etiqueta de almacenamiento según lo que informa Windows: **HDD mecánico, SSD SATA o SSD NVMe**, y un icono genérico cuando Windows no informa el tipo.
-- Almacenamiento en **violeta fijo**; el cian de RAM y los colores de CPU/GPU no cambian.
-- Sin dependencias nuevas ni cambios en los motores de telemetría.
+- Overlay dibujado con Qt dentro de CorePulse, en dos estilos (avanzado y minimalista) y con panel rápido; ya no usa un ejecutable externo.
+- Medición de FPS por eventos de Windows (ETW) más estable, con una sesión de captura propia por cada arranque.
+- Benchmark en tres pasos con veredicto e historial.
+- Compatibilidad con Windows en español: las respuestas de la consola se leen con la página de códigos del sistema.
+- Instalador para Windows con PyInstaller e Inno Setup.
 
-El detalle de cada versión está en [`versiones/HISTORIAL.md`](FASE%202/Evidencias%20Proyecto/CorePulse_REBUILD_146/versiones/HISTORIAL.md) 📜
+El detalle de cada versión está en [`versiones/HISTORIAL.md`](FASE%202/Evidencias%20Proyecto/CorePulse_REBUILD_210/versiones/HISTORIAL.md) 📜
 
 ---
 
@@ -85,11 +86,76 @@ El detalle de cada versión está en [`versiones/HISTORIAL.md`](FASE%202/Evidenc
 
 ---
 
+## Tecnologías
+
+Tecnologías usadas en el proyecto, con las versiones declaradas en `requirements.txt` y `package.json`:
+
+| Capa | Tecnologías |
+|---|---|
+| Aplicación de escritorio | Python 3.12, PySide6 (Qt 6, versión 6.6 o superior) con interfaz QML, psutil 5.9 o superior |
+| Sensores y telemetría | LibreHardwareMonitor mediante HardwareMonitor 1.2 y pythonnet 3.1, NVIDIA-SMI, PowerShell y CIM/WMI |
+| Medición de FPS | Event Tracing for Windows (ETW) con PresentMon |
+| Benchmark | DirectX 11 |
+| Almacenamiento de datos local | SQLite, JSON y JSONL, y DPAPI de Windows para cifrar el token de la cuenta |
+| Inteligencia artificial | Cloudflare Workers y el modelo GPT-OSS 120B a través de Groq |
+| Sitio web | Next.js 16, React 19, TypeScript 5, Tailwind CSS 4, Motion 12 y Lenis 1.3 |
+| Base de datos web e infraestructura | Supabase (PostgreSQL con seguridad por fila), OpenNext para Cloudflare 1.20 y Wrangler 4 |
+| Instalador | PyInstaller e Inno Setup |
+| Pruebas | pytest (aplicación) y pruebas de Node.js (servidor de IA) |
+| Herramientas de trabajo | Git, GitHub y Visual Studio Code |
+
+## Integrantes y roles
+
+Equipo 14, Capstone (PTY4614), Ingeniería en Informática, Duoc UC sede Valparaíso.
+
+| Integrante | Usuario de GitHub | Rol en el proyecto | Áreas a cargo |
+|---|---|---|---|
+| Tomás Hoyt Barrientos | tomashoytbarri24 | Responsable de sistema, datos e integración de versiones | Arranque y permisos, telemetría y sensores, Tweaks de Windows, CorePulse AI, tendencias, integración de versiones e instalador |
+| Agustín Valdés Maturana | agtttttttttttt | Responsable de juegos, interfaz y sitio web | Overlay y medición de FPS, sesiones de juego, Game Boost, benchmark, navegación, temas, cuenta de usuario y sitio web corepulse.cl |
+| Maximiliano Carrasco Pizarro | maxicpa | Responsable de salud, mantenimiento y validación | Centro de Salud, batería y almacenamiento, reparación de Windows, limpieza, red, prueba de velocidad, informes PDF, validación funcional y documentación |
+
+Las prioridades del producto se acuerdan entre los tres integrantes (dueño del producto compartido). Cada integrante corrige los errores de su área.
+
+## Metodología de trabajo
+
+**Metodología utilizada:** Scrum, adaptado a un equipo de tres integrantes y a las 18 semanas de la asignatura.
+
+**Por qué se eligió:** CorePulse depende de hardware muy variado y de lo que cada equipo Windows permite leer o modificar. Muchas decisiones solo podían tomarse después de probar en equipos reales, por lo que convenía trabajar por incrementos cortos, probar pronto y ajustar prioridades sin rehacer todo el plan.
+
+**Cómo se aplicó:**
+
+1. **Sprints semanales.** Cada sprint parte con la priorización del trabajo pendiente y termina con una revisión del equipo sobre lo integrado y lo que falta.
+2. **Product Backlog.** Las tareas se priorizan en alta, media o baja y se asignan a un responsable. El backlog está en el informe de avance de la Fase 2 (Anexo D).
+3. **Incrementos REBUILD.** Cada cambio se entrega como una versión numerada, completa y reversible. Cada versión queda registrada en `versiones/HISTORIAL.md` con su base, cambios, validación y forma de reversión. Al cierre de la Fase 2 hay 210 versiones registradas.
+4. **Definición de terminado.** Una versión está terminada cuando está registrada en el historial, se ejecuta sin errores, no agrega fallos nuevos a las pruebas automatizadas y existe un respaldo de la versión anterior.
+5. **Control de versiones con Git.** Desde la semana 13 el trabajo se publica en este repositorio, ordenado por fase y por tipo de evidencia. Las reglas de Git están en la sección "Cómo se trabaja en el proyecto".
+6. **Congelamiento del alcance.** Desde la semana 14 se priorizan validación, corrección de errores, compatibilidad, instalador y documentación por sobre funciones nuevas.
+
+**Fases del proyecto:**
+
+1. Requerimientos y backlog inicial.
+2. Arquitectura y modelo de datos.
+3. Telemetría, persistencia y diagnóstico.
+4. Interfaz, IA, informe PDF, gaming y optimizaciones.
+5. Pruebas y validación en equipos reales.
+6. Integración, instalador, sitio web y documentación.
+
+**Documentos de la metodología en el repositorio:**
+
+| Documento | Ubicación |
+|---|---|
+| Planificación inicial y Sprint Backlog | `FASE 1/Evidencias Grupales/1.5_GuiaEstudiante_Fase1_CorePulse.docx` |
+| Product Backlog y avance del proyecto | `FASE 2/Evidencias Grupales/2.4_Informe_Avance_Fase2_CorePulse.docx` |
+| Registro de versiones (incrementos) | `FASE 2/Evidencias Proyecto/CorePulse_REBUILD_210/versiones/HISTORIAL.md` |
+| Pruebas automatizadas | `FASE 2/Evidencias Proyecto/CorePulse_REBUILD_210/tests/` |
+
+---
+
 ## 🚀 Probarlo en 2 pasos
 
 ```bash
 # 1️⃣ Entrá a la carpeta de la versión actual
-cd "FASE 2/Evidencias Proyecto/CorePulse_REBUILD_146"
+cd "FASE 2/Evidencias Proyecto/CorePulse_REBUILD_210"
 
 # 2️⃣ Doble clic o desde la terminal
 Iniciar_CorePulse.bat
@@ -97,7 +163,7 @@ Iniciar_CorePulse.bat
 
 > ☕ La primera vez tarda un poco: prepara su propio entorno de Python e instala lo que necesita.
 > Requisitos: **Windows 10/11 de 64 bits** y **Python 3.12+**.
-> El encabezado de la app debe decir **Rebuild 146**. Los informes se guardan en `%LOCALAPPDATA%\CorePulse\reportes`.
+> El encabezado de la app debe decir **Rebuild 210**. Los informes se guardan en `%LOCALAPPDATA%\CorePulse\reportes`.
 
 ---
 
@@ -106,20 +172,20 @@ Iniciar_CorePulse.bat
 > 🧭 Para quien va a meter mano al código. Si solo querés usar la app, con lo de arriba alcanza.
 
 <p>
-  <img src="https://img.shields.io/badge/Python-~21.100_l%C3%ADneas-3776AB?logo=python&logoColor=white">
-  <img src="https://img.shields.io/badge/QML-~8.700_l%C3%ADneas-41CD52?logo=qt&logoColor=white">
-  <img src="https://img.shields.io/badge/pruebas_Python-350-brightgreen?logo=pytest&logoColor=white">
+  <img src="https://img.shields.io/badge/Python-~25.700_l%C3%ADneas-3776AB?logo=python&logoColor=white">
+  <img src="https://img.shields.io/badge/QML-~11.100_l%C3%ADneas-41CD52?logo=qt&logoColor=white">
+  <img src="https://img.shields.io/badge/pruebas_Python-497-brightgreen?logo=pytest&logoColor=white">
   <img src="https://img.shields.io/badge/pruebas_Worker-61-brightgreen?logo=nodedotjs&logoColor=white">
-  <img src="https://img.shields.io/badge/historial-136_versiones_REBUILD-orange">
+  <img src="https://img.shields.io/badge/historial-210_versiones_REBUILD-orange">
 </p>
 
 ### 🗺️ El mapa del tesoro (arquitectura)
 
 ```mermaid
 flowchart LR
-    UI["🎨 ui/*.qml<br/>24 componentes"] --> C["🎛️ main.py<br/>controladores Qt"]
+    UI["🎨 ui/*.qml<br/>33 componentes"] --> C["🎛️ main.py<br/>controladores Qt"]
     C --> CORE["🧠 core/<br/>monitoring · health · maintenance<br/>tweaks · benchmark · ai · cuenta"]
-    CORE --> WIN["🪟 Windows<br/>psutil · HardwareMonitor · PowerShell/CIM<br/>RTSS · DirectX 11 · powercfg"]
+    CORE --> WIN["🪟 Windows<br/>psutil · HardwareMonitor · PowerShell/CIM<br/>ETW/PresentMon · DirectX 11 · powercfg"]
     CORE --> DB[("💾 %LOCALAPPDATA%\\CorePulse<br/>SQLite · JSON/JSONL · DPAPI")]
     CORE -- "🔐 solo con permiso" --> AI["☁️ ai.corepulse.cl<br/>Cloudflare Worker"]
     AI --> KB["📚 knowledge.mjs<br/>RAG curado"]
@@ -130,7 +196,7 @@ flowchart LR
 y lo pesado (WMI, sensores, NVIDIA-SMI) corre en hilos o procesos aparte para que la UI no se congele 🧊.
 
 <details>
-<summary>📂 <b>¿Qué hay en cada carpeta?</b> (dentro de <code>FASE 2/Evidencias Proyecto/CorePulse_REBUILD_146/</code>)</summary>
+<summary>📂 <b>¿Qué hay en cada carpeta?</b> (dentro de <code>FASE 2/Evidencias Proyecto/CorePulse_REBUILD_210/</code>)</summary>
 
 <br>
 
@@ -166,7 +232,7 @@ Todo vive en `%LOCALAPPDATA%\CorePulse`:
 ### 🏃 Ejecutar y probar
 
 ```bash
-cd "FASE 2/Evidencias Proyecto/CorePulse_REBUILD_146"
+cd "FASE 2/Evidencias Proyecto/CorePulse_REBUILD_210"
 
 # ▶️ Arrancar (prepara el entorno aislado la primera vez)
 Iniciar_CorePulse.bat
@@ -181,7 +247,7 @@ python -B -m pytest -p no:cacheprovider -q tests
 
 ## ☁️ CorePulse AI Cloud
 
-El servidor de la IA vive en `FASE 2/Evidencias Proyecto/CorePulse_REBUILD_146/cloud/corepulse-ai/`: un **Cloudflare Worker** (`corepulse-ai-cloud`) publicado en **`https://ai.corepulse.cl`**. La app lo usa por defecto: el usuario no configura URL ni claves.
+El servidor de la IA vive en `FASE 2/Evidencias Proyecto/CorePulse_REBUILD_210/cloud/corepulse-ai/`: un **Cloudflare Worker** (`corepulse-ai-cloud`) publicado en **`https://ai.corepulse.cl`**. La app lo usa por defecto: el usuario no configura URL ni claves.
 
 | Pieza | Detalle |
 |---|---|
@@ -215,7 +281,7 @@ El servidor de la IA vive en `FASE 2/Evidencias Proyecto/CorePulse_REBUILD_146/c
 Desde PowerShell, con Node.js 22+:
 
 ```powershell
-cd "FASE 2\Evidencias Proyecto\CorePulse_REBUILD_146\cloud\corepulse-ai"
+cd "FASE 2\Evidencias Proyecto\CorePulse_REBUILD_210\cloud\corepulse-ai"
 npm.cmd install          # 📦 dependencias (Wrangler 4.151.1 fijado)
 npm.cmd run verify       # ✅ sintaxis + 61 pruebas (simuladas, no gastan tokens)
 npm.cmd audit            # 🔍 revisar antes de publicar; nunca "npm audit fix --force" a ciegas
@@ -250,21 +316,21 @@ npx.cmd wrangler deploy  # 🚀 publicar en ai.corepulse.cl
 
 ---
 
-## 👥 El equipo
+## 👥 El equipo (resumen visual)
 
 <table align="center">
   <tr>
     <td align="center" width="200">
       <a href="https://github.com/tomashoytbarri24"><img src="https://github.com/tomashoytbarri24.png" width="90" style="border-radius:50%"><br><b>Tomás Hoyt</b></a><br>
-      🏗️ Arquitectura · 📡 Telemetría · 🤖 IA
+      🏗️ Sistema · 📡 Telemetría · 🤖 IA · 📦 Instalador
     </td>
     <td align="center" width="200">
       <a href="https://github.com/agtttttttttttt"><img src="https://github.com/agtttttttttttt.png" width="90" style="border-radius:50%"><br><b>Agustín Valdés</b></a><br>
-      🌐 Desarrollo web · ✅ Validación · 📝 Documentación
+      🎮 Juegos · 🎨 Interfaz · 🌐 Web
     </td>
     <td align="center" width="200">
       <a href="https://github.com/maxicpa"><img src="https://github.com/maxicpa.png" width="90" style="border-radius:50%"><br><b>Maximiliano Carrasco</b></a><br>
-      🎨 Interfaz · 🏙️ Benchmark · 🧪 Pruebas
+      🩺 Salud · 🧹 Mantenimiento · ✅ Validación
     </td>
   </tr>
 </table>
@@ -436,7 +502,7 @@ Cuando publicas un **Release** en el repositorio del programa, una GitHub Action
 
 | En GitHub | En la web |
 |---|---|
-| Etiqueta (tag), sin espacios, p. ej. `REBUILD-146` | La versión: los guiones se ven como espacios («REBUILD 146») |
+| Etiqueta (tag), sin espacios, p. ej. `REBUILD-210` | La versión: los guiones se ven como espacios («REBUILD 210») |
 | Nombre del Release | El título |
 | Primer párrafo del texto | La explicación corta |
 | Cada línea que empieza por `- ` | Un cambio de la lista |
