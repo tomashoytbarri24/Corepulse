@@ -9,7 +9,8 @@ Documentación del proyecto CorePulse durante la Fase 2.
 | [Documento_Inicio_Proyecto.md](Documento_Inicio_Proyecto.md) | Problema, alcance, objetivos, restricciones, riesgos y plan del proyecto |
 | [Product_Vision.md](Product_Vision.md) | Visión del producto: usuarios, necesidad que resuelve, propuesta de valor y diferencias con otras herramientas |
 | [Division_Areas_Equipo.md](Division_Areas_Equipo.md) | Áreas, módulos y archivos a cargo de cada integrante, con sus prioridades |
-| [Retrospectivas.md](Retrospectivas.md) | Retrospectivas por sprint: qué se hizo, qué salió bien, qué mejorar y acuerdos |
+| [Sprints.md](Sprints.md) | Cronología de los 7 sprints de la Fase 2 con su objetivo, Sprint Backlog y resultado |
+| [Retrospectivas.md](Retrospectivas.md) | Retrospectivas por sprint: qué salió bien, qué salió mal y acuerdos de mejora |
 
 ## Otra documentación del proyecto
 
