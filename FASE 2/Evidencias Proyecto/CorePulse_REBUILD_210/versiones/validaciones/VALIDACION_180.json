@@ -1,0 +1,84 @@
+{
+  "version": "180",
+  "baseVersion": "179",
+  "reviewedOn": "2026-11-05",
+  "focused": {
+    "passed": 123,
+    "failed": 0,
+    "byFile": {
+      "test_health_reports": 7,
+      "test_runtime": 14,
+      "test_sensor_startup": 10,
+      "test_overlay_activation": 30,
+      "test_game_sessions": 7,
+      "test_game_capture": 21,
+      "test_cloud_ai": 34
+    }
+  },
+  "ui": {
+    "cases": 28,
+    "warnings": [],
+    "storageViewportWidths": [
+      760,
+      1120,
+      1450
+    ],
+    "geometryStable": true,
+    "roundingTolerancePixels": 1,
+    "automaticToggleAndDetail": true,
+    "data": "Synthetic fixtures, not real hardware measurements"
+  },
+  "pdf": {
+    "cases": [
+      "automatic problem record",
+      "manual problem record"
+    ],
+    "pages": [
+      1,
+      1
+    ],
+    "visuallyReviewed": true,
+    "data": "Synthetic samples through real exporter"
+  },
+  "sourceSmoke": {
+    "version": "180",
+    "qmlLoaded": true,
+    "administrator": false,
+    "page": "summary",
+    "qmlWarnings": [],
+    "frozen": false,
+    "sensorsPrepared": true,
+    "cpuTemperatureAvailable": false
+  },
+  "automatic": {
+    "defaultEnabled": true,
+    "warmupSeconds": 5,
+    "minimumFrameMs": 50,
+    "medianMultiplier": 3,
+    "baselineSeconds": 3,
+    "minimumBaselineFrames": 30,
+    "minimumBaselineSpanSeconds": 2,
+    "cooldownSeconds": 60,
+    "preSeconds": 30,
+    "postSeconds": 15,
+    "keepsManualMarker": true,
+    "realGameFramesRequired": true
+  },
+  "native": {
+    "changed": false,
+    "compiledInVersion": "179",
+    "ipcChanged": false
+  },
+  "historical": {
+    "rerun": false,
+    "previousValidation": "validaciones/VALIDACION_179.json"
+  },
+  "pending": [
+    "Real-game automatic-detection sensitivity",
+    "Other PC/DPI",
+    "New installer build"
+  ],
+  "changesToRamCleanup": false,
+  "commitPerformed": false,
+  "pushPerformed": false
+}

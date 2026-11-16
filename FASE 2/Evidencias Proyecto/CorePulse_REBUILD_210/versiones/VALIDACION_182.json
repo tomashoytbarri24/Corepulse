@@ -1,0 +1,29 @@
+{
+  "version": "182",
+  "baseVersion": "181",
+  "reviewedOn": "2026-11-05",
+  "scope": "Ajuste visual de iconos de encabezados QML, sin logica nueva",
+  "qml": {
+    "modifiedFiles": 12,
+    "headersAdjusted": 14,
+    "staticRegressionPassed": true,
+    "runtimeLoaded": false,
+    "runtimeReason": "PySide6/Qt Quick no disponible en entorno de edición"
+  },
+  "tests": {
+    "newRegression": 1,
+    "historicalFocusedPassed": 3,
+    "historicalObsoleteFailure": 1,
+    "historicalFailureDescription": "test_all_qml_components_exist espera exactamente 16 componentes QML; la REBUILD 181 ya incluye 30"
+  },
+  "backendChanged": false,
+  "glyphCatalogChanged": false,
+  "nativeRecompiled": false,
+  "installerBuilt": false,
+  "commitPerformed": false,
+  "pushPerformed": false,
+  "pending": [
+    "Validar visualmente Qt Quick en Windows",
+    "Revisar DPI y anchuras de cabeceras"
+  ]
+}

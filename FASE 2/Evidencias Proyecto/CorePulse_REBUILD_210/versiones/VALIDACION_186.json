@@ -1,0 +1,24 @@
+{
+  "version": 186,
+  "base": 185,
+  "files_modified": [
+    "ui/NetworkPage.qml",
+    "ui/Main.qml",
+    "README.md",
+    "versiones/HISTORIAL.md",
+    "tests/test_speedtest_live.py"
+  ],
+  "changes": [
+    "Rediseño centrado siguiendo video de Ookla",
+    "Corrige franja estrecha en el medidor causada por GridLayout",
+    "INICIO circular en reposo y resultados finales al lado del botón",
+    "Velocímetro real con JSONL y color por fase, sin Cloudflare"
+  ],
+  "validations": {
+    "tests_speedtest_live": "7/7 PASS",
+    "qml_static_brace_check": "PASS",
+    "windows_visual_test": "PENDIENTE",
+    "windows_network_test": "PENDIENTE"
+  },
+  "native_binaries_modified": false
+}
